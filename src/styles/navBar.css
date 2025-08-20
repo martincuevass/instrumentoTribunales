@@ -1,0 +1,31 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  background: #1e325a;
+  color: #e3e2e2;
+}
+
+.navbarTitle {
+  font-size: 2.5rem;
+  margin-right: auto; 
+  color: #e3e2e2;
+}
+
+.navbarIcons {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbarIcon img {
+  width: 50px;
+  height: 50px;
+  transition: opacity 0.2s ease;
+}
+
+.navbarIcon:hover img,
+.navbarIcon:focus img {
+  opacity: 0.8;
+}
