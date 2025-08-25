@@ -83,10 +83,10 @@ export default function Dashboard() {
               <li><Link to="/contentGuide/anexoD">Anexo D – Apoyos generales de participación para Niñas, Niños y Adolescentes</Link></li>
               <li><Link to="/contentGuide/GuideStep5">Paso 5 – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
               <li><Link to="/contentGuide/anexoE">Anexo E – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
-              <li><Link to="">Apéndice 1 – Imágenes para evaluar uso de materiales de apoyo visual</Link></li>
-              <li><Link to="">Apéndice 2 – Material de apoyo visual para brindar información</Link></li>
-              <li><Link to="">Apéndice 3 – Imágenes para evaluar uso de pictogramas</Link></li>
-              <li><Link to="">Apéndice 4 – Imágenes para evaluar materiales de apoyo para la expresión emocional</Link></li>
+              <li><Link to="/contentGuide/apendice1">Apéndice 1 – Imágenes para evaluar uso de materiales de apoyo visual</Link></li>
+              <li><Link to="/contentGuide/apendice2">Apéndice 2 – Material de apoyo visual para brindar información</Link></li>
+              <li><Link to="/contentGuide/apendice3">Apéndice 3 – Imágenes para evaluar uso de pictogramas</Link></li>
+              <li><Link to="/contentGuide/apendice4">Apéndice 4 – Imágenes para evaluar materiales de apoyo para la expresión emocional</Link></li>
             </ul>
           </div>
         </div>

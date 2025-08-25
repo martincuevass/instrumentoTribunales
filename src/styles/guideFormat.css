@@ -24,3 +24,36 @@
   margin-bottom: 1rem;
   font-size: 1rem;
 }
+
+.guideStepContainer table {
+  width: 100%;
+  border-collapse: collapse; /* evita bordes dobles */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.guideStepContainer th,
+.guideStepContainer td {
+  border: 1px solid #c0c0c0; /* color gris de bordes */
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+.guideStepContainer td input[type="checkbox"] {
+  margin-left: 4px;
+}
+
+/* Encabezado azul */
+.guideStepContainer tr:first-child td {
+  background-color: #1f365f;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Subencabezado gris */
+.guideStepContainer tr:nth-child(2) td {
+  background-color: #d1d7e0;
+  font-weight: bold;
+  text-align: center;
+}

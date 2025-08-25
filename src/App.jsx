@@ -14,6 +14,11 @@ import AnexoC from "./pages/contentGuide/anexoC";
 import AnexoD from "./pages/contentGuide/anexoD";
 import AnexoE from "./pages/contentGuide/anexoE";
 
+import Apendice1 from "./pages/contentGuide/apendice1";
+import Apendice2 from "./pages/contentGuide/apendice2";
+import Apendice3 from "./pages/contentGuide/apendice3";
+import Apendice4 from "./pages/contentGuide/apendice4";
+
 
 export default function App() {
   return (
@@ -34,7 +39,10 @@ export default function App() {
       <Route path="/contentGuide/anexoD" element={<AnexoD />} />
       <Route path="/contentGuide/anexoE" element={<AnexoE />} />
 
-      
+      <Route path="/contentGuide/apendice1" element={<Apendice1 />} />
+      <Route path="/contentGuide/apendice2" element={<Apendice2 />} />
+      <Route path="/contentGuide/apendice3" element={<Apendice3 />} />
+      <Route path="/contentGuide/apendice4" element={<Apendice4 />} />
 
 
       <Route path="*" element={<Navigate to="/" replace />} />

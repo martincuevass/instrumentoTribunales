@@ -7,12 +7,12 @@ export default function AnexoA() {
     <>
       <Navbar title="Anexo A" />
       <div className="guideStepContainer">
-        <table border={1}>
+        <table className="styled-table">
           <tbody>
-            <tr style={{ backgroundColor: "#1f365f", color: "white", textAlign: "center" }}>
+            <tr>
               <td colSpan={4}>Revisión del expediente</td>
             </tr>
-            <tr style={{ backgroundColor: "#d1d7e0", textAlign: "center" }}>
+            <tr>
               <td colSpan={4}>Datos de identificación de la Niña, Niño o Adolescente en el expediente</td>
             </tr>
             <tr>
@@ -31,9 +31,15 @@ export default function AnexoA() {
             </tr>
             <tr>
               <td>Sexo:</td>
-              <td>Mujer: ☐</td>
-              <td>Hombre: ☐</td>
-              <td>Otro: ☐</td>
+              <td>
+                Mujer: <input type="checkbox" disabled />
+              </td>
+              <td>
+                Hombre: <input type="checkbox" disabled />
+              </td>
+              <td>
+                Otro: <input type="checkbox" disabled />
+              </td>
             </tr>
             <tr>
               <td>Municipio en el que vive:</td>
@@ -41,31 +47,43 @@ export default function AnexoA() {
             </tr>
             <tr>
               <td>¿Se reporta alguna condición de salud?:</td>
-              <td>No: ☐</td>
-              <td colSpan={2}>Sí: ☐ ¿Cuál?:</td>
+              <td>
+                No: <input type="checkbox" disabled />
+              </td>
+              <td colSpan={2}>
+                Sí: <input type="checkbox" disabled /> ¿Cuál?:
+              </td>
             </tr>
             <tr>
               <td>¿Se reporta alguna discapacidad?:</td>
-              <td>No: ☐</td>
-              <td>Sí: ☐ ¿Cuál?:</td>
               <td>
-                Intelectual: ☐<br />
-                Auditiva: ☐<br />
-                Desarrollo: ☐<br />
-                Visual: ☐<br />
-                Física: ☐<br />
-                Psicosocial: ☐<br />
-                Cognitiva: ☐
+                No: <input type="checkbox" disabled />
+              </td>
+              <td>
+                Sí: <input type="checkbox" disabled /> ¿Cuál?:
+              </td>
+              <td>
+                Intelectual: <input type="checkbox" disabled /><br />
+                Auditiva: <input type="checkbox" disabled /><br />
+                Desarrollo: <input type="checkbox" disabled /><br />
+                Visual: <input type="checkbox" disabled /><br />
+                Física: <input type="checkbox" disabled /><br />
+                Psicosocial: <input type="checkbox" disabled /><br />
+                Cognitiva: <input type="checkbox" disabled />
               </td>
             </tr>
             <tr>
               <td>¿Requiere apoyo de intérprete?:</td>
-              <td>No: ☐</td>
-              <td>Sí: ☐ ¿Cuál?:</td>
               <td>
-                Lengua de señas mexicana: ☐<br />
-                Maya hablante: ☐<br />
-                Otro: ☐__________
+                No: <input type="checkbox" disabled />
+              </td>
+              <td>
+                Sí: <input type="checkbox" disabled /> ¿Cuál?:
+              </td>
+              <td>
+                Lengua de señas mexicana: <input type="checkbox" disabled /><br />
+                Maya hablante: <input type="checkbox" disabled /><br />
+                Otro: <input type="checkbox" disabled />
               </td>
             </tr>
             <tr>
@@ -74,12 +92,17 @@ export default function AnexoA() {
             </tr>
             <tr>
               <td>¿Se requiere gestionar una canalización ante una situación de ayuda inmediata?</td>
-              <td>No: ☐</td>
+              <td>
+                No: <input type="checkbox" disabled />
+              </td>
               <td colSpan={2}>
-                Sí: ☐ ¿Cuál?:<br />
-                Atención psicológica por autolesiones o ideación suicida: ☐<br />
-                Atención de la NOM 046 por afectaciones de violencia sexual: ☐<br />
-                Atención a otros tipos de violencia o vulneración de derechos: ☐
+                Sí: <input type="checkbox" disabled /> ¿Cuál?:<br />
+                Atención psicológica por autolesiones o ideación suicida:{" "}
+                <input type="checkbox" disabled /><br />
+                Atención de la NOM 046 por afectaciones de violencia sexual:{" "}
+                <input type="checkbox" disabled /><br />
+                Atención a otros tipos de violencia o vulneración de derechos:{" "}
+                <input type="checkbox" disabled />
               </td>
             </tr>
             <tr>
