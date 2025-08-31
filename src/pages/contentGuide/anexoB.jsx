@@ -137,7 +137,7 @@ export default function AnexoB() {
                 Otro: <input type="checkbox" disabled />
               </td>
             </tr>
-            
+
             {/* Subencabezado */}
             <tr style={{ backgroundColor: "#d1d7e0", fontWeight: "bold", textAlign: "center" }}>
               <td colSpan={6}>Información de la Niña, Niño o Adolescente</td>
@@ -157,6 +157,104 @@ export default function AnexoB() {
               <td colSpan={3}></td>
             </tr>
 
+
+            <tr>
+              <td rowSpan={2}>¿La Niña, Niño o Adolescente reconoce las emociones de otras personas? (por ejemplo, cuando están felices)</td>
+              <td>Le es posible: <input type="checkbox" disabled /></td>
+              <td>Le es posible con apoyo: <input type="checkbox" disabled /></td>
+              <td>Tiene dificultad: <input type="checkbox" disabled /></td>
+              <td colSpan={2}></td>
+            </tr>
+            <tr>
+              <td colSpan={5}>Describa su respuesta:</td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿La Niña, Niño o Adolescente sintoniza las emociones de otras personas? (por ejemplo, si alguien está asustado)</td>
+              <td>Le es posible: <input type="checkbox" disabled /></td>
+              <td>Le es posible con apoyo: <input type="checkbox" disabled /></td>
+              <td>Tiene dificultad: <input type="checkbox" disabled /></td>
+              <td colSpan={2}></td>
+            </tr>
+            <tr>
+              <td colSpan={5}>Describa su respuesta:</td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿La Niña, Niño o Adolescente expresa sus emociones con otras personas? (por ejemplo, cuando está enojado[a])</td>
+              <td>Le es posible: <input type="checkbox" disabled /></td>
+              <td>Le es posible con apoyo: <input type="checkbox" disabled /></td>
+              <td>Tiene dificultad: <input type="checkbox" disabled /></td>
+              <td colSpan={2}></td>
+            </tr>
+            <tr>
+              <td colSpan={5}>Describa su respuesta:</td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿La Niña, Niño o Adolescente demuestra regulación en sus emociones? (por ejemplo, cuando está triste)</td>
+              <td>Le es posible: <input type="checkbox" disabled /></td>
+              <td>Le es posible con apoyo: <input type="checkbox" disabled /></td>
+              <td>Tiene dificultad: <input type="checkbox" disabled /></td>
+              <td colSpan={2}></td>
+            </tr>
+            <tr>
+              <td colSpan={5}>Describa su respuesta:</td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿Ha abordado el motivo de la diligencia con la Niña, Niño o Adolescente?</td>
+              <td>No: <input type="checkbox" disabled /></td>
+              <td>Si: <input type="checkbox" disabled /></td>
+              <td colSpan={3}>Describa la reacción cuando abordó el tema:</td>
+            </tr>
+            <tr>
+              <td colSpan={5}></td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿La Niña, Niño o Adolescente presenta autolesiones o ideación suicida?</td>
+              <td>No: <input type="checkbox" disabled /></td>
+              <td>Si: <input type="checkbox" disabled /></td>
+              <td colSpan={3}>Describa su respuesta:</td>
+            </tr>
+            <tr>
+              <td colSpan={5}></td>
+            </tr>
+
+
+            <tr>
+              <td rowSpan={2}>¿Conoce los gustos e intereses de la Niña, Niño o Adolescente? (películas, personajes, etc.)</td>
+              <td>No: <input type="checkbox" disabled /></td>
+              <td>Si: <input type="checkbox" disabled /></td>
+              <td colSpan={3}>Describa su respuesta:</td>
+            </tr>
+            <tr>
+              <td colSpan={5}></td>
+            </tr>
+
+
+            <tr>
+              <td colSpan={3
+              }>
+                Observaciones generales de la conducta de la Niña, Niño o Adolescente en la sala de espera o en familia:
+              </td>
+              <td colSpan={3}></td>
+            </tr>
+
+
+            <tr>
+              <td>Fecha de aplicación:</td>
+              <td>DD</td>
+              <td>MM</td>
+              <td>AA</td>
+              <td colSpan={2}></td>
+            </tr>
 
 
           </tbody>

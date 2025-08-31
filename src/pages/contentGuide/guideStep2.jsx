@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
@@ -8,6 +9,7 @@ export default function GuideStep2() {
             <Navbar title="Paso 2" />
             <div className="guideStepContainer">
                 <h1>PASO 2. VERIFICACIÓN CON LA FAMILIA O PERSONA ACOMPAÑANTE</h1>
+
                 <h2>Instrucciones para la persona que aplicará los instrumentos</h2>
                 <p>
                     En el presente apartado, verifique la información con la familia o persona que acompaña
@@ -15,16 +17,16 @@ export default function GuideStep2() {
                     principales datos de identificación, condición de salud, discapacidad o manera de comunicarse que puedan fortalecer la detección de apoyos específicos.
                 </p>
                 <p>
-                    En este paso, utilice el Anexo B para registrar la información proporcionada por la familia o la persona acompañante.
+                    En este paso, utilice el <Link to="/contentGuide/anexoB">Anexo B</Link> para registrar la información proporcionada por la familia o la persona acompañante.
                 </p>
                 <p>
                     Si la familia o la persona acompañante no cuenta con la información solicitada en el
-                    Anexo B, proceda a escribir “ND” en el apartado correspondiente, lo cual significará que la
+                    <Link to="/contentGuide/anexoB"> Anexo B</Link>, proceda a escribir “ND” en el apartado correspondiente, lo cual significará que la
                     información no se encuentra disponible.
                 </p>
                 <p>
-                    En caso de que identifique un apoyo específico con la familia o la persona acompañante, usted procede a describirlo en el Anexo E y considere esta información para entregar
-                    los apoyos necesarios al interactuar con la Niña, Niño o Adolescente en el Paso 3 de esta
+                    En caso de que identifique un apoyo específico con la familia o la persona acompañante, usted procede a describirlo en el <Link to="/contentGuide/anexoE">Anexo E</Link> y considere esta información para entregar
+                    los apoyos necesarios al interactuar con la Niña, Niño o Adolescente en el <Link to="/contentGuide/guideStep3">Paso 3</Link> de esta
                     Guía.
                 </p>
                 <p>
@@ -36,7 +38,7 @@ export default function GuideStep2() {
                 <h2>Sugerencias de apoyos a proporcionar</h2>
                 <p>
                     A continuación, se presenta un listado de apoyos que pueden ser proporcionados a la
-                    Niña, Niño o Adolescente a partir de la información detectada en el Anexo B. Es importante considerar las características individuales de cada caso:
+                    Niña, Niño o Adolescente a partir de la información detectada en el <Link to="/contentGuide/anexoB">Anexo B</Link>. Es importante considerar las características individuales de cada caso:
                 </p>
 
                 <h3>Discapacidad física</h3>
@@ -118,21 +120,21 @@ export default function GuideStep2() {
 
                 <h2>Sugerencias de apoyos a explorar</h2>
                 <p>
-                    A continuación, se presenta un listado de apoyos que se sugieren explorar en el Paso 3
-                    de la Guía, a partir de la información detectada en el Anexo B:
+                    A continuación, se presenta un listado de apoyos que se sugieren explorar en el <Link to="/contentGuide/guideStep3">Paso 3 </Link>
+                    de la Guía, a partir de la información detectada en el <Link to="/contentGuide/anexoB">Anexo B</Link>:
                 </p>
 
                 <h3>Discapacidad intelectual, cognitiva, del desarrollo o dificultades en el habla</h3>
                 <ul>
-                    <li>Evaluar el uso de materiales de apoyo visual para brindar información (Ver Apéndice 1)</li>
-                    <li>Evaluar el uso de pictogramas (Ver Apéndice 2)</li>
-                    <li>Evaluar el uso de materiales de apoyo para la expresión emocional (Ver Apéndice 4)</li>
-                    <li>Evaluar el apoyo de estrategias de modelamiento para brindar indicaciones (Ver Apéndice 1)</li>
+                    <li>Evaluar el uso de materiales de apoyo visual para brindar información (<Link to="/contentGuide/apendice1">Ver Apéndice 1</Link>)</li>
+                    <li>Evaluar el uso de pictogramas (<Link to="/contentGuide/apendice2">Ver Apéndice 2</Link>)</li>
+                    <li>Evaluar el uso de materiales de apoyo para la expresión emocional (<Link to="/contentGuide/apendice4">Ver Apéndice 4</Link>)</li>
+                    <li>Evaluar el apoyo de estrategias de modelamiento para brindar indicaciones (<Link to="/contentGuide/apendice1">Ver Apéndice 1</Link>)</li>
                 </ul>
 
                 <h3>Requerimiento de apoyo o dificultad para el reconocimiento, comprensión o control de las emociones</h3>
                 <ul>
-                    <li>Evaluar el uso de materiales de apoyo para la expresión emocional (Ver Apéndice 4)</li>
+                    <li>Evaluar el uso de materiales de apoyo para la expresión emocional (<Link to="/contentGuide/apendice4">Ver Apéndice 4</Link>)</li>
                 </ul>
             </div>
         </>

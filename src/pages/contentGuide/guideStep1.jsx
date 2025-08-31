@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
@@ -13,19 +14,19 @@ export default function GuideStep1() {
                     En el presente apartado, verifique la información del expediente o carpeta de investigación de la Niña, Niño o Adolescente relacionada con sus datos de identificación y elementos relevantes sobre la condición de salud, discapacidad y manera de comunicarse.
                 </p>
                 <p>
-                    En este paso, utilice el Anexo A para registrar la información que se le solicite del expediente o carpeta de investigación.
+                    En este paso, utilice el <Link to={"/contentGuide/anexoA"}>Anexo A</Link> para registrar la información que se le solicite del expediente o carpeta de investigación.
                 </p>
                 <p>
-                    Si en el expediente o carpeta de investigación, no está presente la información solicitada en el Anexo A, proceda a escribir <strong> “ND” </strong> en el apartado correspondiente, lo cual significará que la información no se encuentra disponible.
+                    Si en el expediente o carpeta de investigación, no está presente la información solicitada en el <Link to={"/contentGuide/anexoA"}>Anexo A</Link>, proceda a escribir <strong> “ND” </strong> en el apartado correspondiente, lo cual significará que la información no se encuentra disponible.
                 </p>
                 <p>
-                    En caso de que se reporte una condición de salud relevante para la diligencia, discapacidad o que se requiera un intérprete, usted procede a informarlo en el Anexo E y describe el tipo de apoyo detectado.
+                    En caso de que se reporte una condición de salud relevante para la diligencia, discapacidad o que se requiera un intérprete, usted procede a informarlo en el <Link to={"/contentGuide/anexoE"}>Anexo E</Link> y describe el tipo de apoyo detectado.
                 </p>
                 <p>
-                    De igual manera, en caso de llenar el Anexo E durante la revisión del expediente, considere esta información para entregar los apoyos necesarios al interactuar con la Niña, Niño o Adolescente en el Paso 3 de esta Guía.
+                    De igual manera, en caso de llenar el <Link to={"/contentGuide/anexoE"}>Anexo E</Link> durante la revisión del expediente, considere esta información para entregar los apoyos necesarios al interactuar con la Niña, Niño o Adolescente en el <Link to={"/contentGuide/GuideStep3"}>Paso 3</Link> de esta Guía.
                 </p>
                 <p>
-                    Ante la detección de una situación de ayuda inmediata en el Anexo A, realice la canalización pertinente, priorizando la atención de la Niña, Niño o Adolescente.
+                    Ante la detección de una situación de ayuda inmediata en el <Link to={"/contentGuide/anexoA"}>Anexo A</Link>, realice la canalización pertinente, priorizando la atención de la Niña, Niño o Adolescente.
                 </p>
             </div>
         </>
