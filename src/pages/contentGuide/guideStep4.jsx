@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
-export default function GuideStep4() {
+export default function GuideStep4({ withNavbar = true }) {
     return (
         <>
-            <Navbar title="Paso 4" />
+            {withNavbar && <Navbar title="Paso 3" />}
             <div className="guideStepContainer">
                 <h1>PASO 4. APOYOS GENERALES DE PARTICIPACIÓN PARA NIÑAS, NIÑOS Y
                     ADOLESCENTES</h1>

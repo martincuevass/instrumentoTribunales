@@ -1,29 +1,99 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/navBar";
+import Add from "../components/add";
 import "../styles/dashboard.css";
-
 
 export default function Dashboard() {
   const [query, setQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  // datos de prueba
-  const data = [
-    { id: "abcd", nombre: "Responsable A", estado: "+" },
-    { id: "efgh", nombre: "Responsable B", estado: "+" },
-    { id: "ijk", nombre: "Responsable C", estado: "+" },
-    { id: "lmn", nombre: "Responsable D", estado: "+" },
-    { id: "opq", nombre: "Responsable E", estado: "+" },
-  ];
+  // Datos iniciales
+  const [data, setData] = useState([
+    { 
+      id: "abcd", 
+      nombre: "Responsable A", 
+      estado: "pendiente", 
+      resultados: "Pendiente",
+      pasoActual: null,   // paso en el que va (null = pendiente, 1–5)
+      anexoActual: null   // anexo en el que va (null = pendiente, A–E)
+    }
+  ]);
 
+  // Filtro de búsqueda
   const filtered = data.filter((row) =>
-    row.id.toLowerCase().includes(query.toLowerCase())
+    (row.id || "").toLowerCase().includes(query.toLowerCase())
   );
+
+  // Función que recibe los datos desde Add.jsx
+  const handleSave = (newChild) => {
+    const nuevo = {
+      id: newChild.datosIniciales || "",
+      nombre: newChild.responsable || "",
+      estado: newChild.instrumentoRealizado ? "realizado" : "pendiente",
+      resultados: "-",
+      pasoActual: null,
+      anexoActual: null,
+    };
+    setData((prev) => [...prev, nuevo]);
+  };
+
+  // Estado del instrumento
+  const renderInstrumentoEstado = (row) => {
+    if (row.estado === "realizado") return "Realizado";
+
+    if (!row.pasoActual) {
+      return (
+        <Link
+          to={`/instrument/${row.id}`}
+          style={{ color: "red", textDecoration: "underline" }}
+        >
+          Instrumento pendiente
+        </Link>
+      );
+    }
+
+    return (
+      <Link
+        to={`/contentGuide/GuideStep${row.pasoActual}`}
+        style={{ color: "#1e325a", textDecoration: "underline" }}
+      >
+        Continuar en el paso {row.pasoActual}
+      </Link>
+    );
+  };
+
+// Estado de los anexos → ahora va en "Resultados capturados"
+const renderResultadosEstado = (row) => {
+  if (row.estado === "realizado") return "Completados";
+
+  if (!row.anexoActual) {
+    return (
+      <Link
+        to={`/instrument/${row.id}`}
+        style={{ color: "red", textDecoration: "underline" }}
+      >
+        Anexo pendiente
+      </Link>
+    );
+  }
+
+  return (
+    <Link
+      to={`/contentGuide/anexo${row.anexoActual}`}
+      style={{ color: "#1e325a", textDecoration: "underline" }}
+    >
+      Continuar en anexo {row.anexoActual}
+    </Link>
+  );
+};
 
   return (
     <>
       <Navbar title="Tablero" />
+
       <div className="dashboard-container">
+        {/* Barra de búsqueda y botón registrar */}
         <div className="dashboard-controls">
           <input
             type="text"
@@ -32,12 +102,15 @@ export default function Dashboard() {
             onChange={(e) => setQuery(e.target.value)}
           />
 
-          <Link to="/registrar" className="register-button">
+          <button
+            className="register-button"
+            onClick={() => setShowModal(true)}
+          >
             Registrar
-          </Link>
-
+          </button>
         </div>
 
+        {/* Tabla principal */}
         <div className="dashboard-main">
           <div className="dashboard-table">
             <table>
@@ -45,31 +118,43 @@ export default function Dashboard() {
                 <tr>
                   <th>Iniciales del niño</th>
                   <th>Nombre del responsable</th>
-                  <th>Desplegar información</th>
+                  <th>Instrumento</th>
+                  <th>Resultados capturados</th>
                 </tr>
               </thead>
               <tbody>
-
-                {filtered.map((row) => (
-                  <tr key={row.id}>
-                    <td>{row.id}</td>
-                    <td>{row.nombre}</td>
-                    <td>{row.estado}</td>
+                {filtered.map((row, i) => (
+                  <tr key={i}>
+                    <td>{row.id || "-"}</td>
+                    <td>{row.nombre || "-"}</td>
+                    <td style={{ textAlign: "center" }}>{renderInstrumentoEstado(row)}</td>
+                    <td style={{ textAlign: "center" }}>{renderResultadosEstado(row)}</td>
                   </tr>
                 ))}
 
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={3} style={{ textAlign: "center", padding: "1rem" }}>
+                    <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
                       Sin resultados
                     </td>
                   </tr>
                 )}
 
+                <tr>
+                  <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
+                    <Link
+                      to="/childTable"
+                      style={{ textDecoration: "underline", color: "#1e325a" }}
+                    >
+                      Ver todo
+                    </Link>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
+          {/* Menú lateral */}
           <div className="dashboard-steps">
             <h2>CONSULTAR INSTRUMENTO</h2>
             <ul>
@@ -91,6 +176,13 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modal de registro */}
+      <Add
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSave={handleSave}
+      />
     </>
   );
 }

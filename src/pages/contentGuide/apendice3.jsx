@@ -21,16 +21,16 @@ export default function Apendice3() {
       <div className="guideStepContainer">
         <h1>APÉNDICE 3. IMÁGENES PARA EVALUAR EL USO DE PICTOGRAMAS</h1>
         <p>Actividad 2</p>
-<img src={pintura} alt="pintura" />
-<img src={reunion} alt="pintura" />
-<img src={musica} alt="pintura" />
-<img src={juego} alt="pintura" />
-<img src={clase} alt="pintura" />
-<img src={comida} alt="pintura" />
-<img src={ducha} alt="pintura" />
-<img src={liquido} alt="pintura" />
-<img src={baño} alt="pintura" />
-<img src={hablar} alt="pintura" />
+        <img src={pintura} alt="pintura" />
+        <img src={reunion} alt="reunion" />
+        <img src={musica} alt="musica" />
+        <img src={juego} alt="juego" />
+        <img src={clase} alt="clase" />
+        <img src={comida} alt="comida" />
+        <img src={ducha} alt="ducha" />
+        <img src={liquido} alt="liquido" />
+        <img src={baño} alt="baño" />
+        <img src={hablar} alt="hablar" />
       </div>
     </>
   );

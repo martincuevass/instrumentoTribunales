@@ -1,3 +1,4 @@
+/* Contenedor principal del dashboard */
 .dashboard-container {
     padding: 1.5rem;
     display: flex;
@@ -18,12 +19,27 @@
     }
 }
 
+/* Input de búsqueda */
 .dashboard-controls input[type="text"] {
     flex: 1;
     padding: 0.5rem 1rem;
     border: 1px solid #dedddc;
     border-radius: 4px;
+    background-color: white;
+    color: black;
+    font-size: 1rem;
 }
+
+.dashboard-controls input[type="text"]::placeholder {
+    color: #888;
+}
+
+.dashboard-controls input[type="text"]:focus {
+    outline: none;
+    border-color: #1e325a;
+    box-shadow: 0 0 5px rgba(30, 50, 90, 0.3);
+}
+
 
 .dashboard-controls .register-button {
     padding: 0.5rem 1.25rem;
@@ -38,6 +54,7 @@
 .dashboard-controls .register-button:hover {
     background-color: #2a4476;
 }
+
 
 .dashboard-main {
     display: flex;
@@ -87,7 +104,7 @@
 
 .dashboard-steps h2 {
     font-size: 1.75rem;
-    font-weight: 700;   
+    font-weight: 700;
     margin-bottom: 1rem;
     color: #1e325a;
 }

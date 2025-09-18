@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
-export default function GuideStep5() {
+export default function GuideStep4({ withNavbar = true }) {
     return (
         <>
-            <Navbar title="Paso 5" />
+            {withNavbar && <Navbar title="Paso 3" />}
             <div className="guideStepContainer">
                 <h1>PASO 5</h1>
                 <h2>Instrucciones para la persona que aplicará los instrumentos</h2>

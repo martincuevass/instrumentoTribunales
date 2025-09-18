@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
-export default function AnexoB() {
+export default function AnexoB({ editable = false, withNavbar = true }) {
   return (
     <>
-      <Navbar title="Anexo B" />
+      {withNavbar && <Navbar title="Anexo B" />}
       <div className="guideStepContainer">
         <table>
           <tbody>

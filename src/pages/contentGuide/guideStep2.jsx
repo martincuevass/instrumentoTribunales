@@ -1,12 +1,14 @@
+// src/views/contentGuide/GuideStep2.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
-export default function GuideStep2() {
+export default function GuideStep2({ withNavbar = true }) {
     return (
         <>
-            <Navbar title="Paso 2" />
+            {withNavbar && <Navbar title="Paso 2" />}
+
             <div className="guideStepContainer">
                 <h1>PASO 2. VERIFICACIÓN CON LA FAMILIA O PERSONA ACOMPAÑANTE</h1>
 

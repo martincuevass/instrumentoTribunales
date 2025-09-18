@@ -8,10 +8,10 @@ import actividad2 from "../../assets/3.4actividad2.png";
 import rostros from "../../assets/3.5actividad1.png";
 import emociones from "../../assets/emociones.png";
 
-export default function GuideStep3() {
+export default function GuideStep3({ withNavbar = true }) {
   return (
     <>
-      <Navbar title="Paso 3" />
+      {withNavbar && <Navbar title="Paso 3" />}
       <div className="guideStepContainer">
         <h1>PASO 3. VERIFICACIÓN DIRECTA CON LA NIÑA, NIÑO O ADOLESCENTE</h1>
 

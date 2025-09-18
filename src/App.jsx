@@ -1,6 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
+import ChildTable from "./pages/childTable"
+import Instrument from "./pages/instrument"
+import Anexos from "./pages/anexoshandler"
 
 import GuideStep1 from "./pages/contentGuide/guideStep1";
 import GuideStep2 from "./pages/contentGuide/guideStep2";
@@ -26,6 +29,9 @@ export default function App() {
       <Route path="/" element={<Login />} />
 
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/childTable" element={<ChildTable />} />
+      <Route path="/instrument/:id" element={<Instrument />} />
+      <Route path="/anexoshandler/:id" element={<Anexos />} />
       
       <Route path="/contentGuide/guideStep1" element={<GuideStep1 />} />
       <Route path="/contentGuide/guideStep2" element={<GuideStep2 />} />
