@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import HomeIcon from "../assets/home.svg";
 import ProfileIcon from "../assets/user.svg";
 import "../styles/navbar.css";
+import Profile from "../pages/profile";
 
 export default function Navbar({ title = "", className = "" }) {
     return (

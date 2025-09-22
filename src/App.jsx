@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import ChildTable from "./pages/childTable"
 import Instrument from "./pages/instrument"
 import Anexos from "./pages/anexoshandler"
+import Profile from "./pages/profile";
 
 import GuideStep1 from "./pages/contentGuide/guideStep1";
 import GuideStep2 from "./pages/contentGuide/guideStep2";
@@ -32,7 +33,9 @@ export default function App() {
       <Route path="/childTable" element={<ChildTable />} />
       <Route path="/instrument/:id" element={<Instrument />} />
       <Route path="/anexoshandler/:id" element={<Anexos />} />
-      
+      {/* Agregando la página de perfil a la ruta */}
+      <Route path="/profile" element={<Profile />} />
+
       <Route path="/contentGuide/guideStep1" element={<GuideStep1 />} />
       <Route path="/contentGuide/guideStep2" element={<GuideStep2 />} />
       <Route path="/contentGuide/guideStep3" element={<GuideStep3 />} />
