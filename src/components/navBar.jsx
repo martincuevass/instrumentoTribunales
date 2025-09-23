@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 import HomeIcon from "../assets/home.svg";
 import ProfileIcon from "../assets/user.svg";
+import LogoutIcon from "../assets/logout-svgrepo-com.svg";
 import "../styles/navbar.css";
 import Profile from "../pages/profile";
 
@@ -31,6 +32,13 @@ export default function Navbar({ title = "", className = "" }) {
                     className="navbarIcon"
                 >
                     <img src={ProfileIcon} alt="Perfil" />
+                </Link>
+                <Link
+                    to="/"
+                    aria-label="Logout"
+                    className="navbarIcon"
+                >
+                    <img src={LogoutIcon} alt="Perfil" />
                 </Link>
             </nav>
         </motion.header>
