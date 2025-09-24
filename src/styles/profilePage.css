@@ -1,0 +1,109 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  color: #222;
+}
+
+.profile-details p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+.table-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+  color: #222;
+}
+
+.table-placeholder {
+  text-align: center;
+  padding: 40px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #666;
+  height: 300px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.styled-table th { 
+  font-weight: bold;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 0.5rem 1.25rem;
+    background-color: #1e325a;
+    color: #dedddc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover {
+    background-color: #2a4476;
+}
+
+.pagination span {
+  font-size: 0.95rem;
+  color: #444;
+}
