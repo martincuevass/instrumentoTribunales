@@ -1,0 +1,18 @@
+[
+  {
+    "id": 10001,
+    "nombreCompleto": "Juan Pérez",
+    "email": "juan.perez@empresa.com",
+    "password": "password123",
+    "tipoUsuario": "entrevistador",
+    "contacto": "+52 (555) 100-0101"
+  },
+  {
+    "id": 10002,
+    "nombreCompleto": "Martin Cuevas",
+    "email": "martin.cuevas@empresa.com",
+    "password": "password456",
+    "tipoUsuario": "administrador",
+    "contacto": "+52 (555) 100-0102"
+  }
+]

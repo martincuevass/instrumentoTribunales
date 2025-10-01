@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/navBar";
 
+// Se importan todos los componentes de los pasos
+import GuideStep0 from "../pages/contentGuide/guideStep0";
 import GuideStep1 from "../pages/contentGuide/guideStep1";
 import GuideStep2 from "../pages/contentGuide/guideStep2";
 import GuideStep3 from "../pages/contentGuide/guideStep3";
@@ -10,129 +12,175 @@ import GuideStep5 from "../pages/contentGuide/guideStep5";
 
 import "../styles/button.css";
 
-export default function Instrumento() {
-  const { id } = useParams(); // niño
-  const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+const pasos = [
+  { key: 0, title: "Consentimiento Informado" },
+  { key: 1, title: "Revisión del Expediente" },
+  { key: 2, title: "Verificación con la familia" },
+  { key: 3, title: "Verificación con el NNA" },
+  { key: 4, title: "Apoyos generales de participación" },
+  { key: 5, title: "Perfil de apoyos" },
+];
 
-  // Cargar el paso guardado
+export default function Instrumento() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const [activeStep, setActiveStep] = useState(null); 
+  const [registroActual, setRegistroActual] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
-    const savedStep = localStorage.getItem(`instrumento-step-${id}`);
-    if (savedStep) {
-      setStep(parseInt(savedStep, 10));
+    try {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) setCurrentUser(JSON.parse(storedUser));
+
+      const todosLosRegistros = JSON.parse(localStorage.getItem('registrosNiños')) || [];
+      const registro = todosLosRegistros.find(r => String(r.id) === String(id));
+      setRegistroActual(registro);
+      
+    } catch (error) {
+      console.error("Error al cargar datos desde localStorage:", error);
     }
   }, [id]);
 
-  const handleSiguiente = () => {
-    if (step < 5) {
-      const newStep = step + 1;
-      setStep(newStep);
-      localStorage.setItem(`instrumento-step-${id}`, newStep);
+  const updateRegistroEnStorage = (updates) => {
+    const todosLosRegistros = JSON.parse(localStorage.getItem('registrosNiños')) || [];
+    const registrosActualizados = todosLosRegistros.map(registro => {
+      if (String(registro.id) === String(id)) {
+        const nuevoRegistro = { ...registro, ...updates };
+        setRegistroActual(nuevoRegistro);
+        return nuevoRegistro;
+      }
+      return registro;
+    });
+    localStorage.setItem('registrosNiños', JSON.stringify(registrosActualizados));
+  };
+
+  const handleAbrirPaso = (stepKey) => {
+    setActiveStep(stepKey);
+  };
+
+  const handleGuardarYVolverALista = () => {
+    if (activeStep !== null) {
+      updateRegistroEnStorage({ pasoActual: activeStep });
+    }
+    setActiveStep(null);
+  };
+
+  const handleAtrasSinGuardar = () => {
+    setActiveStep(null);
+  };
+
+  const handleSiguientePaso = () => {
+    if (activeStep !== null && activeStep < 5) {
+      updateRegistroEnStorage({ pasoActual: activeStep });
+      setActiveStep(activeStep + 1);
     }
   };
 
-  const handleAnterior = () => {
-    if (step > 1) {
-      const newStep = step - 1;
-      setStep(newStep);
-      localStorage.setItem(`instrumento-step-${id}`, newStep);
-    }
+  const handleFinalizar = () => {
+    updateRegistroEnStorage({ estado: 'realizado', pasoActual: 5 });
+    alert(`Instrumento finalizado para el niño ${id}.`);
+    navigate('/dashboard');
   };
 
-  //flujo de anexos
-  const handleCapturar = () => {
-    let anexoKey = null;
-    switch (step) {
-      case 1: anexoKey = "A"; break;
-      case 2: anexoKey = "B"; break;
-      case 3: anexoKey = "C"; break;
-      case 4: anexoKey = "D"; break;
-      case 5: anexoKey = "E"; break;
-      default: break;
-    }
-
-    if (anexoKey) {
-      localStorage.setItem(`instrumento-anexo-${id}`, anexoKey);
-      // redirige a la vista de anexos y abre el anexo
-      navigate(`/anexoshandler/${id}?open=${anexoKey}`);
-    }
+  const handleUploadSuccess = (uploadResult) => {
+    updateRegistroEnStorage({ documento: uploadResult.fileData, pasoActual: 0 });
+    setActiveStep(null); 
   };
 
-  const handleGuardarYSalir = () => {
-    localStorage.setItem(`instrumento-step-${id}`, step);
-    alert(`Paso ${step} guardado para el niño ${id}`);
-    navigate("/dashboard");
-  };
-
-  const handleTerminar = () => {
-    localStorage.removeItem(`instrumento-step-${id}`);
-    localStorage.removeItem(`instrumento-anexo-${id}`);
-    alert(`Instrumento completado para el niño ${id}`);
-    navigate("/dashboard");
-  };
-
-  const renderContenido = () => {
-    switch (step) {
+  const renderPasoActivo = () => {
+    switch (activeStep) {
+      // -> CORRECCIÓN CLAVE AQUÍ <-
+      // Se asegura de pasar el documento existente como prop a GuideStep0.
+      case 0: 
+        return <GuideStep0 
+          onUploadSuccess={handleUploadSuccess} 
+          existingDocument={registroActual?.documento} 
+        />;
       case 1: return <GuideStep1 withNavbar={false} />;
       case 2: return <GuideStep2 withNavbar={false} />;
       case 3: return <GuideStep3 withNavbar={false} />;
       case 4: return <GuideStep4 withNavbar={false} />;
       case 5: return <GuideStep5 withNavbar={false} />;
-      default: return <p>Paso no disponible</p>;
+      default: return null;
     }
+  };
+
+  const getStepStatus = (stepKey) => {
+    if (!registroActual) return "Pendiente";
+    if (registroActual.estado === 'realizado') return "Completado";
+
+    if (stepKey === 0) {
+      return registroActual.documento ? "Completado" : "Pendiente";
+    }
+    const pasoGuardado = registroActual.pasoActual !== null ? registroActual.pasoActual : (registroActual.documento ? 0 : -1);
+    if (pasoGuardado >= stepKey) return "Completado";
+    if (pasoGuardado === stepKey - 1) return "Siguiente";
+    return "Pendiente";
   };
 
   return (
     <>
-      <Navbar title={`Instrumento para niño ${id}`} />
-
+      <Navbar title={`Instrumento para niño ${id}`} currentUser={currentUser} />
       <div style={{ padding: "2rem" }}>
-        {renderContenido()}
+        {!activeStep && activeStep !== 0 ? (
+          <>
+            <h2>Pasos del Instrumento</h2>
+            <ul>
+              {pasos.map(({ key, title }) => {
+                const status = getStepStatus(key);
+                const isDisabled = status === 'Pendiente' && key !== 0 && registroActual?.estado !== 'realizado';
 
-        <div
-          style={{
-            marginTop: "2rem",
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-          }}
-        >
-          <div>
-            {step > 1 && (
-              <button
-                className="button button-secondary"
-                onClick={handleAnterior}
-                style={{ marginRight: "1rem" }}
-              >
-                Paso anterior
-              </button>
-            )}
-
-            {step < 5 ? (
-              <button className="button button-primary" onClick={handleSiguiente}>
-                Siguiente paso
-              </button>
-            ) : (
-              <button className="button button-success" onClick={handleTerminar}>
-                Terminar
-              </button>
-            )}
-
-            <button className="button button-primary" onClick={handleCapturar}>
-              Capturar resultados
-            </button>
-          </div>
-
-          <div>
+                return (
+                  <li key={key} style={{ marginBottom: "1rem" }}>
+                    <span>
+                      <strong>Paso {key}: {title}</strong> – {status}
+                    </span>
+                    <button
+                      className="button button-primary"
+                      style={{ marginLeft: "1rem" }}
+                      onClick={() => handleAbrirPaso(key)}
+                      disabled={isDisabled}
+                    >
+                      {status === 'Completado' ? "Revisar" : "Abrir"}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
             <button
               className="button button-secondary"
-              onClick={handleGuardarYSalir}
+              onClick={() => navigate("/dashboard")}
             >
-              Guardar y salir
+              Volver al dashboard
             </button>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            {renderPasoActivo()}
+            <div style={{ marginTop: "1.5rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <button className="button button-primary" onClick={handleGuardarYVolverALista}>
+                Guardar y Volver a la Lista
+              </button>
+              <button className="button button-secondary" onClick={handleAtrasSinGuardar}>
+                Atrás (sin guardar)
+              </button>
+              {activeStep < 5 && (
+                <button className="button button-success" onClick={handleSiguientePaso}>
+                  Guardar y Siguiente Paso
+                </button>
+              )}
+              {activeStep === 5 && (
+                <button className="button button-success" onClick={handleFinalizar}>
+                  Finalizar Instrumento
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
 }
+

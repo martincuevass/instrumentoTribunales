@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../styles/add.css";
 
-export default function Add({ show, onClose, onSave }) {
+// 1. Recibe 'currentUser' en las props, junto a los demás
+export default function Add({ show, onClose, onSave, currentUser }) {
   const [datosIniciales, setDatosIniciales] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [responsable, setResponsable] = useState("");
@@ -20,8 +21,10 @@ export default function Add({ show, onClose, onSave }) {
       responsable,
       municipio,
       contacto,
-      instrumentoRealizado
+      instrumentoRealizado,
+      userId: currentUser.id, // 2. Añade el ID del usuario al objeto que se guarda
     });
+    // Limpieza de los campos del formulario
     setDatosIniciales("");
     setFechaNacimiento("");
     setResponsable("");
@@ -36,6 +39,7 @@ export default function Add({ show, onClose, onSave }) {
       <div className="modal">
         <h2>Registrar niño</h2>
         <form onSubmit={handleSubmit} className="form-grid">
+          {/* El resto de tu formulario no cambia */}
           <div className="form-group">
             <label htmlFor="datosIniciales">Datos iniciales del niño:</label>
             <input
@@ -46,7 +50,6 @@ export default function Add({ show, onClose, onSave }) {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="fechaNacimiento">Fecha de nacimiento:</label>
             <input
@@ -57,7 +60,6 @@ export default function Add({ show, onClose, onSave }) {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="responsable">Nombre del responsable:</label>
             <input
@@ -68,7 +70,6 @@ export default function Add({ show, onClose, onSave }) {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="municipio">Municipio:</label>
             <input
@@ -79,7 +80,6 @@ export default function Add({ show, onClose, onSave }) {
               required
             />
           </div>
-
           <div className="form-group full-width">
             <label htmlFor="contacto">Contacto del responsable:</label>
             <input
@@ -90,7 +90,6 @@ export default function Add({ show, onClose, onSave }) {
               required
             />
           </div>
-
           <div className="form-group full-width checkbox-group">
             <input
               id="instrumento"
@@ -100,7 +99,6 @@ export default function Add({ show, onClose, onSave }) {
             />
             <label htmlFor="instrumento">¿Ya se ha realizado el instrumento?</label>
           </div>
-
           <div className="modal-buttons full-width">
             <button type="submit" className="accept">Guardar</button>
             <button type="button" className="cancel" onClick={onClose}>
@@ -113,8 +111,10 @@ export default function Add({ show, onClose, onSave }) {
   );
 }
 
+// 3. Actualiza los propTypes para incluir currentUser
 Add.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };

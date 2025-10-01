@@ -33,7 +33,6 @@ export default function App() {
       <Route path="/childTable" element={<ChildTable />} />
       <Route path="/instrument/:id" element={<Instrument />} />
       <Route path="/anexoshandler/:id" element={<Anexos />} />
-      {/* Agregando la página de perfil a la ruta */}
       <Route path="/profile" element={<Profile />} />
 
       <Route path="/contentGuide/guideStep1" element={<GuideStep1 />} />
@@ -52,7 +51,6 @@ export default function App() {
       <Route path="/contentGuide/apendice2" element={<Apendice2 />} />
       <Route path="/contentGuide/apendice3" element={<Apendice3 />} />
       <Route path="/contentGuide/apendice4" element={<Apendice4 />} />
-
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

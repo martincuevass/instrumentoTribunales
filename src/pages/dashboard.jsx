@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Navbar from "../components/navBar";
 import Add from "../components/add";
 import "../styles/dashboard.css";
@@ -7,93 +7,103 @@ import "../styles/dashboard.css";
 export default function Dashboard() {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState([]);
+  const location = useLocation();
 
-  // Datos iniciales
-  const [data, setData] = useState([
-    { 
-      id: "abcd", 
-      nombre: "Responsable A", 
-      estado: "pendiente", 
-      resultados: "Pendiente",
-      pasoActual: null,   // paso en el que va (null = pendiente, 1–5)
-      anexoActual: null   // anexo en el que va (null = pendiente, A–E)
+  // Lógica mejorada para obtener el usuario de forma segura
+  const storedUser = localStorage.getItem('currentUser');
+  const currentUser = location.state?.user || (storedUser ? JSON.parse(storedUser) : null);
+
+  useEffect(() => {
+    // Carga los registros de forma segura
+    try {
+      const registrosGuardados = JSON.parse(localStorage.getItem('registrosNiños')) || [];
+      setData(registrosGuardados);
+    } catch (error) {
+      console.error("Error al cargar los registros:", error);
+      setData([]); // En caso de error, se establece un array vacío
     }
-  ]);
+  }, []);
 
-  // Filtro de búsqueda
-  const filtered = data.filter((row) =>
+  if (!currentUser) {
+    return (
+      <div>
+        <Navbar title="Error" />
+        <p style={{ textAlign: 'center', marginTop: '2rem' }}>
+          No se pudo identificar al usuario. Por favor, <Link to="/">inicia sesión</Link> de nuevo.
+        </p>
+      </div>
+    );
+  }
+
+  const registrosDelUsuario = data.filter(
+    (registro) => registro.userId === currentUser.id
+  );
+
+  const filtered = registrosDelUsuario.filter((row) =>
     (row.id || "").toLowerCase().includes(query.toLowerCase())
   );
 
-  // Función que recibe los datos desde Add.jsx
   const handleSave = (newChild) => {
     const nuevo = {
-      id: newChild.datosIniciales || "",
+      id: newChild.datosIniciales || `Nino-${Date.now()}`,
       nombre: newChild.responsable || "",
       estado: newChild.instrumentoRealizado ? "realizado" : "pendiente",
-      resultados: "-",
+      resultados: "Pendiente",
       pasoActual: null,
       anexoActual: null,
+      userId: newChild.userId,
     };
-    setData((prev) => [...prev, nuevo]);
+    const registrosActualizados = [...data, nuevo];
+    localStorage.setItem('registrosNiños', JSON.stringify(registrosActualizados));
+    setData(registrosActualizados);
   };
 
-  // Estado del instrumento
   const renderInstrumentoEstado = (row) => {
-    if (row.estado === "realizado") return "Realizado";
-
-    if (!row.pasoActual) {
+    // -> CAMBIO REALIZADO AQUÍ <-
+    // Ahora, si el estado es 'realizado', también será un enlace para consultar.
+    if (row.estado === "realizado") {
       return (
         <Link
           to={`/instrument/${row.id}`}
-          style={{ color: "red", textDecoration: "underline" }}
+          style={{ color: "green", textDecoration: "underline" }}
         >
-          Instrumento pendiente
+          Realizado (Consultar)
         </Link>
       );
     }
 
+    const linkText = row.pasoActual ? `Continuar en el paso ${row.pasoActual}` : "Instrumento pendiente";
+    const linkColor = row.pasoActual ? "#1e325a" : "red";
+    
     return (
       <Link
-        to={`/contentGuide/GuideStep${row.pasoActual}`}
-        style={{ color: "#1e325a", textDecoration: "underline" }}
+        to={`/instrument/${row.id}`}
+        style={{ color: linkColor, textDecoration: "underline" }}
       >
-        Continuar en el paso {row.pasoActual}
+        {linkText}
       </Link>
     );
   };
 
-// Estado de los anexos → ahora va en "Resultados capturados"
-const renderResultadosEstado = (row) => {
-  if (row.estado === "realizado") return "Completados";
-
-  if (!row.anexoActual) {
+  const renderResultadosEstado = (row) => {
+    if (row.estado === "realizado") return "Completados";
+    const linkText = row.anexoActual ? `Continuar en anexo ${row.anexoActual}` : "Anexo pendiente";
+    
     return (
       <Link
-        to={`/instrument/${row.id}`}
-        style={{ color: "red", textDecoration: "underline" }}
+        to={`/anexoshandler/${row.id}`}
+        style={{ color: row.anexoActual ? "#1e325a" : "red", textDecoration: "underline" }}
       >
-        Anexo pendiente
+        {linkText}
       </Link>
     );
-  }
-
-  return (
-    <Link
-      to={`/contentGuide/anexo${row.anexoActual}`}
-      style={{ color: "#1e325a", textDecoration: "underline" }}
-    >
-      Continuar en anexo {row.anexoActual}
-    </Link>
-  );
-};
+  };
 
   return (
     <>
-      <Navbar title="Tablero" />
-
+      <Navbar title="Tablero" currentUser={currentUser} />
       <div className="dashboard-container">
-        {/* Barra de búsqueda y botón registrar */}
         <div className="dashboard-controls">
           <input
             type="text"
@@ -101,7 +111,6 @@ const renderResultadosEstado = (row) => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-
           <button
             className="register-button"
             onClick={() => setShowModal(true)}
@@ -109,8 +118,6 @@ const renderResultadosEstado = (row) => {
             Registrar
           </button>
         </div>
-
-        {/* Tabla principal */}
         <div className="dashboard-main">
           <div className="dashboard-table">
             <table>
@@ -123,38 +130,20 @@ const renderResultadosEstado = (row) => {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((row, i) => (
-                  <tr key={i}>
+                {filtered.map((row) => (
+                  <tr key={row.id}>
                     <td>{row.id || "-"}</td>
                     <td>{row.nombre || "-"}</td>
                     <td style={{ textAlign: "center" }}>{renderInstrumentoEstado(row)}</td>
                     <td style={{ textAlign: "center" }}>{renderResultadosEstado(row)}</td>
                   </tr>
                 ))}
-
                 {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
-                      Sin resultados
-                    </td>
-                  </tr>
+                  <tr><td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>Sin resultados</td></tr>
                 )}
-
-                <tr>
-                  <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
-                    <Link
-                      to="/childTable"
-                      style={{ textDecoration: "underline", color: "#1e325a" }}
-                    >
-                      Ver todo
-                    </Link>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
-
-          {/* Menú lateral */}
           <div className="dashboard-steps">
             <h2>CONSULTAR INSTRUMENTO</h2>
             <ul>
@@ -176,13 +165,13 @@ const renderResultadosEstado = (row) => {
           </div>
         </div>
       </div>
-
-      {/* Modal de registro */}
       <Add
         show={showModal}
         onClose={() => setShowModal(false)}
         onSave={handleSave}
+        currentUser={currentUser}
       />
     </>
   );
 }
+
