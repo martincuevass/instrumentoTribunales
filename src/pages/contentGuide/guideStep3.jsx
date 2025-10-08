@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/navBar";
+import Navbar from "../../components/navBar.jsx";
 import "../../styles/guideFormat.css";
 import casa from "../../assets/casa.png";
 import cartas from "../../assets/cartas.png";

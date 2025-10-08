@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import LoginForm from "./loginForm";
-import ForgotForm from "./forgotForm";
+import LoginForm from "./loginForm.jsx";
+import ForgotForm from "./forgotForm.jsx";
 import "../styles/rightSideStart.css";
 
 export default function RightSideStart() {

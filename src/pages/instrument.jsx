@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../components/navBar";
+import Navbar from "../components/navBar.jsx";
 
 // Se importan todos los componentes de los pasos
-import GuideStep0 from "../pages/contentGuide/guideStep0";
-import GuideStep1 from "../pages/contentGuide/guideStep1";
-import GuideStep2 from "../pages/contentGuide/guideStep2";
-import GuideStep3 from "../pages/contentGuide/guideStep3";
-import GuideStep4 from "../pages/contentGuide/guideStep4";
-import GuideStep5 from "../pages/contentGuide/guideStep5";
+import GuideStep0 from "../pages/contentGuide/guideStep0.jsx";
+import GuideStep1 from "../pages/contentGuide/guideStep1.jsx";
+import GuideStep2 from "../pages/contentGuide/guideStep2.jsx";
+import GuideStep3 from "../pages/contentGuide/guideStep3.jsx";
+import GuideStep4 from "../pages/contentGuide/guideStep4.jsx";
+import GuideStep5 from "../pages/contentGuide/guideStep5.jsx";
 
 import "../styles/button.css";
 

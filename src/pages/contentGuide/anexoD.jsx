@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from "../../components/navBar";
+import Navbar from "../../components/navBar.jsx";
 import "../../styles/guideFormat.css";
 
 // Estructura de datos inicial para el Anexo D

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import Navbar from "../components/navBar";
+import Navbar from "../components/navBar.jsx";
 
-import AnexoA from "../pages/contentGuide/anexoA";
-import AnexoB from "../pages/contentGuide/anexoB";
-import AnexoC from "../pages/contentGuide/anexoC";
-import AnexoD from "../pages/contentGuide/anexoD";
-import AnexoE from "../pages/contentGuide/anexoE";
+import AnexoA from "../pages/contentGuide/anexoA.jsx";
+import AnexoB from "../pages/contentGuide/anexoB.jsx";
+import AnexoC from "../pages/contentGuide/anexoC.jsx";
+import AnexoD from "../pages/contentGuide/anexoD.jsx";
+import AnexoE from "../pages/contentGuide/anexoE.jsx";
 
 import "../styles/button.css";
 

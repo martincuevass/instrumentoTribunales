@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../../components/navBar";
+import Navbar from "../../components/navBar.jsx";
 import "../../styles/guideFormat.css";
 
 import pintura from "../../assets/apendice3pintura.png"

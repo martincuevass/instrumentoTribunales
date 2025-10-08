@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import HomeIcon from "../assets/home.svg";
 import ProfileIcon from "../assets/user.svg";
 import LogoutIcon from "../assets/logout-svgrepo-com.svg";
-import "../styles/navbar.css";
+import "../styles/navBar.css";
 
 // 1. Acepta 'currentUser' como prop
 export default function Navbar({ title = "", currentUser, className = "" }) {

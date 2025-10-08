@@ -1,7 +1,7 @@
 // src/views/contentGuide/GuideStep1.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/navBar";
+import Navbar from "../../components/navBar.jsx";
 import "../../styles/guideFormat.css";
 
 export default function GuideStep1({ withNavbar = true }) {
