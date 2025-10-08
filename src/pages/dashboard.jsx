@@ -10,18 +10,16 @@ export default function Dashboard() {
   const [data, setData] = useState([]);
   const location = useLocation();
 
-  // Lógica mejorada para obtener el usuario de forma segura
   const storedUser = localStorage.getItem('currentUser');
   const currentUser = location.state?.user || (storedUser ? JSON.parse(storedUser) : null);
 
   useEffect(() => {
-    // Carga los registros de forma segura
     try {
       const registrosGuardados = JSON.parse(localStorage.getItem('registrosNiños')) || [];
       setData(registrosGuardados);
     } catch (error) {
       console.error("Error al cargar los registros:", error);
-      setData([]); // En caso de error, se establece un array vacío
+      setData([]);
     }
   }, []);
 
@@ -44,6 +42,8 @@ export default function Dashboard() {
     (row.id || "").toLowerCase().includes(query.toLowerCase())
   );
 
+  // Función para guardar un nuevo registro.
+  // 'resultados' siempre inicia como "Pendiente".
   const handleSave = (newChild) => {
     const nuevo = {
       id: newChild.datosIniciales || `Nino-${Date.now()}`,
@@ -59,9 +59,8 @@ export default function Dashboard() {
     setData(registrosActualizados);
   };
 
+  // Renderiza el estado del Instrumento.
   const renderInstrumentoEstado = (row) => {
-    // -> CAMBIO REALIZADO AQUÍ <-
-    // Ahora, si el estado es 'realizado', también será un enlace para consultar.
     if (row.estado === "realizado") {
       return (
         <Link
@@ -86,19 +85,32 @@ export default function Dashboard() {
     );
   };
 
-  const renderResultadosEstado = (row) => {
-    if (row.estado === "realizado") return "Completados";
-    const linkText = row.anexoActual ? `Continuar en anexo ${row.anexoActual}` : "Anexo pendiente";
-    
+const renderResultadosEstado = (row) => {
+  if (row.resultados === "Completado") {
     return (
       <Link
+        // 👇 CAMBIO 1: La ruta ahora es a 'anexoshandler'
         to={`/anexoshandler/${row.id}`}
-        style={{ color: row.anexoActual ? "#1e325a" : "red", textDecoration: "underline" }}
+        // 👇 CAMBIO 2: Le pasamos un estado para indicar el modo "solo consulta"
+        state={{ viewOnly: true }}
+        style={{ color: "green", textDecoration: "underline" }}
       >
-        {linkText}
+        Completado (Consultar)
       </Link>
     );
-  };
+  }
+  
+  const linkText = row.anexoActual ? `Continuar en anexo ${row.anexoActual}` : "Anexo pendiente";
+  
+  return (
+    <Link
+      to={`/anexoshandler/${row.id}`}
+      style={{ color: row.anexoActual ? "#1e325a" : "red", textDecoration: "underline" }}
+    >
+      {linkText}
+    </Link>
+  );
+};
 
   return (
     <>
@@ -147,20 +159,20 @@ export default function Dashboard() {
           <div className="dashboard-steps">
             <h2>CONSULTAR INSTRUMENTO</h2>
             <ul>
-              <li><Link to="/contentGuide/GuideStep1">Paso 1 – Revisión del Expediente</Link></li>
-              <li><Link to="/contentGuide/anexoA">Anexo A – Revisión del Expediente</Link></li>
-              <li><Link to="/contentGuide/GuideStep2">Paso 2 – Verificación con la familia o persona acompañante</Link></li>
-              <li><Link to="/contentGuide/anexoB">Anexo B – Verificación con la familia o persona acompañante</Link></li>
-              <li><Link to="/contentGuide/GuideStep3">Paso 3 – Verificación directa con la niña, niño o adolescente</Link></li>
-              <li><Link to="/contentGuide/anexoC">Anexo C – Verificación directa con la niña, niño o adolescente</Link></li>
-              <li><Link to="/contentGuide/GuideStep4">Paso 4 – Apoyos generales de participación para niñas, niños y adolescentes</Link></li>
-              <li><Link to="/contentGuide/anexoD">Anexo D – Apoyos generales de participación para Niñas, Niños y Adolescentes</Link></li>
-              <li><Link to="/contentGuide/GuideStep5">Paso 5 – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
-              <li><Link to="/contentGuide/anexoE">Anexo E – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
-              <li><Link to="/contentGuide/apendice1">Apéndice 1 – Imágenes para evaluar uso de materiales de apoyo visual</Link></li>
-              <li><Link to="/contentGuide/apendice2">Apéndice 2 – Material de apoyo visual para brindar información</Link></li>
-              <li><Link to="/contentGuide/apendice3">Apéndice 3 – Imágenes para evaluar uso de pictogramas</Link></li>
-              <li><Link to="/contentGuide/apendice4">Apéndice 4 – Imágenes para evaluar materiales de apoyo para la expresión emocional</Link></li>
+                <li><Link to="/contentGuide/GuideStep1">Paso 1 – Revisión del Expediente</Link></li>
+                <li><Link to="/contentGuide/anexoA">Anexo A – Revisión del Expediente</Link></li>
+                <li><Link to="/contentGuide/GuideStep2">Paso 2 – Verificación con la familia o persona acompañante</Link></li>
+                <li><Link to="/contentGuide/anexoB">Anexo B – Verificación con la familia o persona acompañante</Link></li>
+                <li><Link to="/contentGuide/GuideStep3">Paso 3 – Verificación directa con la niña, niño o adolescente</Link></li>
+                <li><Link to="/contentGuide/anexoC">Anexo C – Verificación directa con la niña, niño o adolescente</Link></li>
+                <li><Link to="/contentGuide/GuideStep4">Paso 4 – Apoyos generales de participación para niñas, niños y adolescentes</Link></li>
+                <li><Link to="/contentGuide/anexoD">Anexo D – Apoyos generales de participación para Niñas, Niños y Adolescentes</Link></li>
+                <li><Link to="/contentGuide/GuideStep5">Paso 5 – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
+                <li><Link to="/contentGuide/anexoE">Anexo E – Perfil de apoyos centrados en la Niña, Niño o Adolescente</Link></li>
+                <li><Link to="/contentGuide/apendice1">Apéndice 1 – Imágenes para evaluar uso de materiales de apoyo visual</Link></li>
+                <li><Link to="/contentGuide/apendice2">Apéndice 2 – Material de apoyo visual para brindar información</Link></li>
+                <li><Link to="/contentGuide/apendice3">Apéndice 3 – Imágenes para evaluar uso de pictogramas</Link></li>
+                <li><Link to="/contentGuide/apendice4">Apéndice 4 – Imágenes para evaluar materiales de apoyo para la expresión emocional</Link></li>
             </ul>
           </div>
         </div>
@@ -174,4 +186,3 @@ export default function Dashboard() {
     </>
   );
 }
-

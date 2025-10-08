@@ -1,266 +1,188 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import Navbar from "../../components/navBar";
 import "../../styles/guideFormat.css";
 
-export default function AnexoD() {
+// Estructura de datos inicial para el Anexo D
+const initialState = {
+  infraestructura: {
+    mobiliarioAdaptado: [],
+    espacioLibreEstimulos: [],
+    espacioFisicoAdaptado: [],
+    sanitariosAccesibles: [],
+    senaleticaCognitiva: [],
+  },
+  comunicacion: {
+    vocabularioFacil: [],
+    frasesSimples: [],
+    documentosLenguajeClaro: [],
+    preguntasBreves: [],
+    informaResuelveDudas: [],
+    relacionAcordeDesarrollo: [],
+  },
+  dinamica: {
+    familiarizacionPrevia: [],
+    continuidadPersonal: [],
+    horarioAdecuado: [],
+    cambioDia: [],
+    salaPrivada: [],
+    descansos: [],
+  },
+  observaciones: ""
+};
+
+// Objeto con las descripciones para renderizar la tabla dinámicamente
+const apoyosDescripcion = {
+  infraestructura: [
+    { key: 'mobiliarioAdaptado', categoria: 'Mobiliario adaptado', items: ['Sillas que corresponden a las necesidades de altura y espacio.', 'Mesas que corresponden a las necesidades de altura y espacio.'] },
+    { key: 'espacioLibreEstimulos', categoria: 'Espacio libre de estimulos', items: ['Generar un espacio libre de objetos: expedientes, libros, fotografías, recipientes, etc.', 'Espacio libre de estímulos sensoriales auditivos: música, ruidos, conversaciones en tono elevado.', 'Espacio libre de estímulos sensoriales visuales: fotografías, videos, vestimenta formal o llamativa, etc.', 'Espacio libre de estímulos sensoriales olfativos: alimentos, perfumes fuertes, etc.'] },
+    { key: 'espacioFisicoAdaptado', categoria: 'Espacio físico adaptado', items: ['Espacio físico que considera un lugar de juego', 'Espacio físico que considera el tránsito libre de las personas', 'Espacio físico que facilita la lectura de las expresiones faciales por medio de la posición de los lugares frente a frente.'] },
+    { key: 'sanitariosAccesibles', categoria: 'Sanitarios accesibles', items: ['Los espacios sanitarios contemplan una señalización visible', 'Los espacios sanitarios contemplan la distribución de espacio amplio para el acceso de las sillas de ruedas.', 'Los espacios sanitarios contemplan tener la puerta, inodoro, lavamanos, espejo, accesorios y urinales adaptados a las medidas de las niñas, niños y adolescentes'] },
+    { key: 'senaleticaCognitiva', categoria: 'Señalética con accesibilidad cognitiva', items: ['La señalética que se emplea en la dependencia utiliza imágenes universales y sencillas que informan de forma clara los lugares principales en los que estará en contacto las niñas, niños y adolescentes durante su participación.', 'Los espacios principales para contemplar la señalética son la entrada, sala de espera, sala de entrevista, sanitarios, salida.'] },
+  ],
+  comunicacion: [
+    { key: 'vocabularioFacil', categoria: 'Frases claras y cortas con vocabulario fácil de comprender', items: ['Palabras concretas y en positivo;', 'Verbos en presente y formulados en voz activa;', 'Palabras apropiadas y fáciles de entender;', 'Tecnicismos o extrañas se evitan, o en su caso se explican;', 'El lenguaje sexista y racista se evita.'] },
+    { key: 'frasesSimples', categoria: 'Frases claras y cortas con vocabulario fácil de comprender', items: ['Estructura simple: sujeto, verbo, complemento y predicado;', 'Frases con una idea principal; y', 'Emplear menos de 20 palabras.'] },
+    { key: 'documentosLenguajeClaro', categoria: 'Documentos de lectura con lenguaje claro y simple', items: ['Un tema principal por párrafo;', 'Las frases se relacionan entre sí;', 'Utiliza conectores entre las frases y párrafos; y', 'Tono de redacción amistoso y cálido.'] },
+    { key: 'preguntasBreves', categoria: 'Preguntas breves y sencillas', items: ['Las preguntas exploratorias que se empleen con las niñas, niños y adolescentes se basan en protocolos estandarizados y especializados para la recuperación de relatos.'] },
+    { key: 'informaResuelveDudas', categoria: 'Informa y resuelve dudas', items: ['Las niñas, niños y adolescentes reciben información sobre el objetivo de la diligencia, quiénes estarán presentes, el papel que desempeñan las personas presentes, lo que sucederá durante la diligencia, las características de cómo es el lugar y lo esperado de su parte.', 'Las niñas, niños y adolescentes reciben información sobre las decisiones que se tomen y les involucren.', 'A las niñas, niños y adolescentes se les pregunta si tienen alguna duda sobre la situación o información brindada.', 'A las niñas, niños y adolescentes se les informa que pueden expresar las dudas que sean necesarias en cualquier momento.'] },
+    { key: 'relacionAcordeDesarrollo', categoria: 'Relacionarse acorde a su desarrollo, gustos e intereses', items: ['La forma de comunicarse con las niñas, niños y adolescentes es construida a partir de su desarrollo, gustos e intereses personales (actividades recreativas, música, programas, películas, etc.).', 'La manera de comunicarse con las niñas, niños y adolescentes evita centrarse en características físicas (estatura o apariencia), condiciones de salud o discapacidad.'] },
+  ],
+  dinamica: [
+    { key: 'familiarizacionPrevia', categoria: 'Familiarización previa con el espacio de participación', items: ['Los espacios y las personas que estarán presentes en la diligencia en la que participarán las niñas, niños y adolescentes son presentados por el personal con anticipación de forma física o por medio de materiales visuales (puede utilizar la plataforma de Tribunales Amigables).'] },
+    { key: 'continuidadPersonal', categoria: 'Continuidad con el mismo personal', items: ['Se procura que el personal que tuvo el primer contacto con las niñas, niños o adolescentes, es quien les acompaña a las diligencias en las que se requiera su participación.'] },
+    { key: 'horarioAdecuado', categoria: 'Horario adecuado', items: ['Los horarios para programar una diligencia con las niñas, niños o adolescentes evitan aquellos horarios que involucran la atención a necesidades básicas, como lo es la alimentación y el descanso.'] },
+    { key: 'cambioDia', categoria: 'Cambio de día', items: ['Si la diligencia se programa en horarios nocturnos; si se encuentra emocionalmente indispuesta; si se encuentra enferma; si requiere mayor tiempo para prepararse emocionalmente para participar en la diligencia, etc.; y', 'También es importante considerar cambiar el día de la diligencia cuando existan conductas de agresividad hacia sí misma u otras personas, así como ante la sospecha de estar en efectos por el consumo de sustancias tóxicas.'] },
+    { key: 'salaPrivada', categoria: 'Sala privada', items: ['La participación de las niñas, niños o adolescentes en una entrevista se realiza en una habitación privada.', 'En caso de no contar con un espacio privado, la entrevista se realiza cuando no se encuentren otras diligencias simultáneas.'] },
+    { key: 'descansos', categoria: 'Descansos', items: ['Informar antes de iniciar la diligencia, que pueden pedir un receso cuando lo requieran.', 'Prestar atención a las señales no verbales de las niñas, niños y adolescentes, debido a que pueden requerir de un descanso y no expresarlo verbalmente, por lo que se puede preguntar explícitamente.', 'Implementar espacios de descanso cada 20 minutos cuando en la participación de las niñas, niños o adolescentes se identifique hiperactividad, dificultad de atención o para la regulación emocional.'] },
+  ]
+};
+
+
+export default function AnexoD({ editable = false, withNavbar = true, onSaveAndExit }) {
+  const { id } = useParams();
+  const [form, setForm] = useState(initialState);
+  const isInitialMount = useRef(true);
+
+  // Carga los datos guardados
+  useEffect(() => {
+    if (editable) {
+      try {
+        const saved = localStorage.getItem(`anexoD-${id}`);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setForm(prev => ({ ...initialState, ...prev, ...parsed }));
+        }
+      } catch (error) {
+        console.error("Error al cargar datos del anexo D:", error);
+      }
+    }
+  }, [id, editable]);
+
+  // Guarda los datos al cambiar
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    if (editable) {
+      try {
+        localStorage.setItem(`anexoD-${id}`, JSON.stringify(form));
+      } catch (error) {
+        console.error("Error al guardar datos del anexo D:", error);
+      }
+    }
+  }, [form, id, editable]);
+
+  const handleCheckboxChange = (section, key, item) => {
+    setForm(prev => {
+      const items = prev[section]?.[key] || [];
+      const newItems = items.includes(item)
+        ? items.filter(i => i !== item)
+        : [...items, item];
+      return { ...prev, [section]: { ...prev[section], [key]: newItems } };
+    });
+  };
+  
+  const handleTextChange = (field, value) => {
+      setForm(prev => ({...prev, [field]: value}));
+  }
+
+  // Helper para renderizar una sección de la tabla
+  const renderSection = (sectionKey) => {
+    const sectionData = apoyosDescripcion[sectionKey];
+    return sectionData.map(({ key, categoria, items }) => (
+      <React.Fragment key={key}>
+        <tr>
+          <td rowSpan={items.length} colSpan={3}>{categoria}</td>
+          <td colSpan={3}>
+            <label>
+              <input type="checkbox" disabled={!editable} checked={form[sectionKey]?.[key]?.includes(items[0])} onChange={() => handleCheckboxChange(sectionKey, key, items[0])} /> {items[0]}
+            </label>
+          </td>
+        </tr>
+        {items.slice(1).map(item => (
+          <tr key={item}>
+            <td colSpan={3}>
+              <label>
+                <input type="checkbox" disabled={!editable} checked={form[sectionKey]?.[key]?.includes(item)} onChange={() => handleCheckboxChange(sectionKey, key, item)} /> {item}
+              </label>
+            </td>
+          </tr>
+        ))}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <>
-      <Navbar title="Anexo D" />
+      {withNavbar && <Navbar title="Anexo D" />}
       <div className="guideStepContainer">
-        <table>
+        <table className="styled-table">
+          <thead>
+            <tr className="header-row"><td colSpan={6}>Apoyos generales de participación para Niñas, Niños y Adolescentes</td></tr>
+          </thead>
           <tbody>
-            {/* Encabezado principal */}
-            <tr style={{ backgroundColor: "#1f365f", color: "white", textAlign: "center" }}>
-              <td colSpan={6}>Apoyos generales de participación para Niñas, Niños y Adolescentes</td>
-            </tr>
-
-            {/* Subencabezado */}
-            <tr style={{ backgroundColor: "#d1d7e0", fontWeight: "bold", textAlign: "center" }}>
-              <td colSpan={6}>Apoyos generales de infraestructura</td>
-            </tr>
-
+            {/* SECCIÓN INFRAESTRUCTURA */}
+            <tr className="subheader-row"><td colSpan={6}>Apoyos generales de infraestructura</td></tr>
             <tr>
-              <td colSpan={3}> Categoria</td>
-              <td colSpan={3}> Descripción</td>
+              <td colSpan={3} style={{ fontWeight: 'bold' }}>Categoría</td>
+              <td colSpan={3} style={{ fontWeight: 'bold' }}>Descripción / Selección</td>
             </tr>
+            {renderSection('infraestructura')}
 
+            {/* SECCIÓN COMUNICACIÓN */}
+            <tr className="subheader-row"><td colSpan={6}>Apoyos generales de comunicación</td></tr>
+            {renderSection('comunicacion')}
+
+            {/* SECCIÓN DINÁMICA */}
+            <tr className="subheader-row"><td colSpan={6}>Apoyos generales de la dinámica del procedimiento de la diligencia</td></tr>
+            {renderSection('dinamica')}
+
+            {/* SECCIÓN OBSERVACIONES */}
+            <tr className="subheader-row"><td colSpan={6}>Observaciones</td></tr>
             <tr>
-              <td rowSpan={2} colSpan={3}>Mobiliario adaptado</td>
-              <td colSpan={3}>Sillas que corresponden a las necesidades de altura y espacio.
+              <td colSpan={6}>
+                <textarea 
+                  disabled={!editable}
+                  value={form.observaciones}
+                  onChange={(e) => handleTextChange('observaciones', e.target.value)}
+                  style={{width: '100%', minHeight: '100px', resize: 'vertical', padding: '8px'}}
+                  placeholder='Añade aquí cualquier observación relevante sobre los apoyos seleccionados...'
+                />
               </td>
             </tr>
-            <tr>
-              <td colSpan={3}>Mesas que corresponden a las necesidades de altura y espacio.</td>
-            </tr>
-
-            <tr>
-              <td rowSpan={4} colSpan={3}>Espacio libre de estimulos</td>
-              <td colSpan={3}>Generar un espacio libre de objetos: expedientes, libros, fotografías,
-                recipientes, etc.
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Espacio libre de estímulos sensoriales auditivos: música, ruidos,
-                conversaciones en tono elevado.</td>
-            </tr>
-            <tr><td colSpan={3}>Espacio libre de estímulos sensoriales visuales: fotografías, videos,
-              vestimenta formal o llamativa, etc.</td></tr>
-            <tr><td colSpan={3}>Espacio libre de estímulos sensoriales olfativos: alimentos, perfumes
-              fuertes, etc.</td></tr>
-
-
-            <tr>
-              <td rowSpan={3} colSpan={3}>Espacio físico adaptado</td>
-              <td colSpan={3}>Espacio físico que considera un lugar de juego
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Espacio físico que considera el tránsito libre de las personas</td>
-            </tr>
-            <tr><td colSpan={3}>Espacio físico que facilita la lectura de las expresiones faciales por medio de
-              la posición de los lugares frente a frente.</td></tr>
-
-
-            <tr>
-              <td rowSpan={3} colSpan={3}>Sanitarios accesibles</td>
-              <td colSpan={3}>Los espacios sanitarios contemplan una señalización visible
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Los espacios sanitarios contemplan la distribución de espacio amplio para
-                el acceso de las sillas de ruedas.</td>
-            </tr>
-            <tr><td colSpan={3}>Los espacios sanitarios contemplan tener la puerta, inodoro, lavamanos,
-              espejo, accesorios y urinales adaptados a las medidas de las niñas,
-              niños y adolescentes</td></tr>
-
-
-            <tr>
-              <td rowSpan={2} colSpan={3}>Señalética con
-                accesibilidad cognitiva</td>
-              <td colSpan={3}>La señalética que se emplea en la dependencia utiliza imágenes universales
-                y sencillas que informan de forma clara los lugares principales en los que
-                estará en contacto las niñas, niños y adolescentes durante su participación.
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Los espacios principales para contemplar la señalética son la entrada, sala
-                de espera, sala de entrevista, sanitarios, salida.</td>
-            </tr>
-
-            {/* Subencabezado */}
-            <tr style={{ backgroundColor: "#d1d7e0", fontWeight: "bold", textAlign: "center" }}>
-              <td colSpan={6}>Apoyos generales de comunicacion</td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}>Frases claras y cortas
-                con vocabulario fácil de
-                comprender</td>
-              <td colSpan={3}>El vocabulario de interacción que se emplee con las niñas, niños y
-                adolescentes se adecúa a partir de los siguientes puntos:
-                <ul>
-                  <li>Palabras concretas y en positivo;</li>
-                  <li>Verbos en presente y formulados en voz activa;</li>
-                  <li>Palabras apropiadas y fáciles de entender;</li>
-                  <li>Tecnicismos o extrañas se evitan, o en su caso se explican;</li>
-                  <li>El lenguaje sexista y racista se evita.</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}>Frases claras y cortas
-                con vocabulario fácil de
-                comprender</td>
-              <td colSpan={3}>Las frases de interacción que se empleen con las niñas, niños y
-                adolescentes se ajustan a partir de los siguientes puntos:
-                <ul>
-                  <li>Estructura simple: sujeto, verbo, complemento y predicado; </li>
-                  <li>Frases con una idea principal; y</li>
-                  <li>Emplear menos de 20 palabras.</li>
-                </ul>
-              </td>
-            </tr>
-
-
-            <tr>
-              <td colSpan={3}>Documentos de lectura
-                con lenguaje claro
-                y simple</td>
-              <td colSpan={3}>Los materiales y formatos de lectura que se utilicen con las niñas, niños y
-                adolescentes se elaboran con anticipación y contemplan frases claras y
-                cortas con vocabulario fácil de comprender (ver recomendaciones de
-                frases claras y cortas) y utilizan párrafos con estructura clara a partir de
-                las siguientes recomendaciones:
-                <ul>
-                  <li>Un tema principal por párrafo;</li>
-                  <li> Las frases se relacionan entre sí;</li>
-                  <li> Utiliza conectores entre las frases y párrafos; y</li>
-                  <li> Tono de redacción amistoso y cálido.</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}> Preguntas breves
-                y sencillas</td>
-              <td colSpan={3}> Las preguntas exploratorias que se empleen con las niñas, niños y
-                adolescentes se basan en protocolos estandarizados y especializados
-                para la recuperación de relatos.</td>
-            </tr>
-
-
-            <tr>
-              <td rowSpan={4} colSpan={3}>Informa y resuelve
-                dudas</td>
-              <td colSpan={3}>Las niñas, niños y adolescentes reciben información sobre el objetivo
-                de la diligencia, quiénes estarán presentes, el papel que desempeñan
-                las personas presentes, lo que sucederá durante la diligencia, las
-                características de cómo es el lugar y lo esperado de su parte.
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Las niñas, niños y adolescentes reciben información sobre las decisiones
-                que se tomen y les involucren.</td>
-            </tr>
-            <tr><td colSpan={3}>A las niñas, niños y adolescentes se les pregunta si tienen alguna duda
-              sobre la situación o información brindada.</td></tr>
-            <tr><td colSpan={3}>A las niñas, niños y adolescentes se les informa que pueden expresar las
-              dudas que sean necesarias en cualquier momento.</td></tr>
-
-            <tr>
-              <td rowSpan={2} colSpan={3}>Relacionarse acorde a
-                su desarrollo, gustos
-                e intereses</td>
-              <td colSpan={3}>La forma de comunicarse con las niñas, niños y adolescentes es construida
-                a partir de su desarrollo, gustos e intereses personales (actividades
-                recreativas, música, programas, películas, etc.).
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>La manera de comunicarse con las niñas, niños y adolescentes evita
-                centrarse en características físicas (estatura o apariencia), condiciones
-                de salud o discapacidad.</td>
-            </tr>
-
-            {/* Subencabezado */}
-            <tr style={{ backgroundColor: "#d1d7e0", fontWeight: "bold", textAlign: "center" }}>
-              <td colSpan={6}>Apoyos generales de la dinámica del procedimiento de la diligencia
-              </td>
-            </tr>
-
-
-            <tr>
-              <td colSpan={3}> Familiarización previa
-                con el espacio de
-                participación</td>
-              <td colSpan={3}> Los espacios y las personas que estarán presentes en la diligencia en la que
-                participarán las niñas, niños y adolescentes son presentados por el personal
-                con anticipación de forma física o por medio de materiales visuales (puede
-                utilizar la plataforma de Tribunales Amigables).</td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}> Continuidad con el
-                mismo personal </td>
-              <td colSpan={3}> Se procura que el personal que tuvo el primer contacto con las niñas, niños
-                o adolescentes, es quien les acompaña a las diligencias en las que se
-                requiera su participación. </td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}> Horario adecuado </td>
-              <td colSpan={3}> Los horarios para programar una diligencia con las niñas, niños o
-                adolescentes evitan aquellos horarios que involucran la atención a
-                necesidades básicas, como lo es la alimentación y el descanso. </td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}> Cambio de día </td>
-              <td colSpan={3}> El cambio de día para la participación de las niñas, niños o adolescentes se
-                puede realizar a partir del análisis de cada situación y del criterio del interés
-                superior de la niñez, por ejemplo:
-                <ul>
-                  <li> Si la diligencia se programa en horarios nocturnos; si se encuentra emocionalmente indispuesta; si se encuentra enferma; si requiere mayor tiempo
-                    para prepararse emocionalmente para participar en la diligencia, etc.; y</li>
-                  <li> También es importante considerar cambiar el día de la diligencia cuando
-                    existan conductas de agresividad hacia sí misma u otras personas, así como
-                    ante la sospecha de estar en efectos por el consumo de sustancias tóxicas.
-                  </li></ul> </td>
-            </tr>
-
-            <tr>
-              <td rowSpan={2} colSpan={3}>Sala privada</td>
-              <td colSpan={3}>La participación de las niñas, niños o adolescentes en una entrevista se
-                ealiza en una habitación privada.
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>En caso de no contar con un espacio privado, la entrevista se realiza cuando
-                no se encuentren otras diligencias simultáneas.</td>
-            </tr>
-
-            <tr>
-              <td rowSpan={3} colSpan={3}>Descansos</td>
-              <td colSpan={3}>Informar antes de iniciar la diligencia, que pueden pedir un receso cuando
-                lo requieran.
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3}>Prestar atención a las señales no verbales de las niñas, niños y adolescentes,
-                debido a que pueden requerir de un descanso y no expresarlo verbalmente,
-                por lo que se puede preguntar explícitamente.</td>
-            </tr>
-
-            <tr>
-              <td colSpan={3}>Implementar espacios de descanso cada 20 minutos cuando en la participación de las niñas, niños o adolescentes se identifique hiperactividad,
-                dificultad de atención o para la regulación emocional.</td>
-            </tr>
-
           </tbody>
         </table>
+        {editable && (
+          <div style={{ marginTop: "1.5rem" }}>
+            <button className="button button-secondary" onClick={onSaveAndExit}>
+              Guardar y volver
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
 }
+

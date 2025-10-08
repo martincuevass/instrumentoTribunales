@@ -13,6 +13,18 @@ export default function Add({ show, onClose, onSave, currentUser }) {
 
   if (!show) return null;
 
+  const handleDatosInicialesChange = (e) => {
+    const value = e.target.value;
+    
+    // Usamos una expresión regular para permitir solo letras (A-Z, a-z).
+    // La longitud ya está limitada a 4 por el atributo maxLength en el input.
+    if (/^[a-zA-Z]*$/.test(value)) {
+      // Convertimos a mayúsculas para mantener consistencia y actualizamos el estado.
+      setDatosIniciales(value.toUpperCase());
+    }
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({
@@ -40,16 +52,18 @@ export default function Add({ show, onClose, onSave, currentUser }) {
         <h2>Registrar niño</h2>
         <form onSubmit={handleSubmit} className="form-grid">
           {/* El resto de tu formulario no cambia */}
-          <div className="form-group">
-            <label htmlFor="datosIniciales">Datos iniciales del niño:</label>
-            <input
-              id="datosIniciales"
-              type="text"
-              value={datosIniciales}
-              onChange={(e) => setDatosIniciales(e.target.value)}
-              required
-            />
-          </div>
+<div className="form-group">
+  <label htmlFor="datosIniciales">Datos iniciales del niño:</label>
+  <input
+    id="datosIniciales"
+    type="text"
+    value={datosIniciales}
+    // 👇 CAMBIOS AQUÍ 👇
+    onChange={handleDatosInicialesChange} // Usar la nueva función
+    maxLength="4"                       // Limitar la longitud a 4
+    required
+  />
+</div>
           <div className="form-group">
             <label htmlFor="fechaNacimiento">Fecha de nacimiento:</label>
             <input

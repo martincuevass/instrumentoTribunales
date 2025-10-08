@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/navBar";
 
 import AnexoA from "../pages/contentGuide/anexoA";
@@ -10,68 +10,104 @@ import AnexoE from "../pages/contentGuide/anexoE";
 
 import "../styles/button.css";
 
-export default function Anexos() {
-  const { id } = useParams(); // niño
+const anexosDisponibles = [
+  { key: "A", title: "Revisión del Expediente" },
+  { key: "B", title: "Verificación con la familia" },
+  { key: "C", title: "Verificación con NNA" },
+  { key: "D", title: "Apoyos generales de participación" },
+  { key: "E", title: "Perfil de apoyos" },
+];
+
+export default function AnexosHandler() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [activeAnexo, setActiveAnexo] = useState(null); // A, B, C, D, E
-  const [status, setStatus] = useState({ A: false, B: false, C: false, D: false, E: false });
+  const [activeAnexo, setActiveAnexo] = useState(null);
+  const [status, setStatus] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
 
-  // cargar anexos ya llenados
   useEffect(() => {
-    const newStatus = { ...status };
-    ["A", "B", "C", "D", "E"].forEach((key) => {
-      const saved = localStorage.getItem(`anexo${key}-${id}`);
-      newStatus[key] = !!saved; // true si existe
-    });
-    setStatus(newStatus);
-  }, [id]);
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) setCurrentUser(JSON.parse(storedUser));
+    
+    updateStatusFromStorage();
 
-  const handleAbrirAnexo = (key) => {
-    setActiveAnexo(key);
-  };
+    const params = new URLSearchParams(location.search);
+    const openAnexo = params.get('open');
+    if (openAnexo && anexosDisponibles.some(a => a.key === openAnexo)) {
+      setActiveAnexo(openAnexo);
+    }
+  }, [id, location.search]);
 
-  const handleSalir = () => {
-    setActiveAnexo(null);
-    const newStatus = { ...status };
-    ["A", "B", "C", "D", "E"].forEach((key) => {
+  const updateStatusFromStorage = () => {
+    const newStatus = {};
+    anexosDisponibles.forEach(({ key }) => {
       const saved = localStorage.getItem(`anexo${key}-${id}`);
       newStatus[key] = !!saved;
     });
     setStatus(newStatus);
   };
 
-  const renderAnexo = () => {
+  const handleAbrirAnexo = (key) => {
+    setActiveAnexo(key);
+  };
+
+  // ✅ FUNCIÓN MODIFICADA
+  const handleVolverALista = () => {
+    setActiveAnexo(null);
+    updateStatusFromStorage();
+    navigate(`/anexoshandler/${id}`, { replace: true });
+    
+    // Llama a la lógica de verificación al volver a la lista
+    checkAndFinalizeResults(id);
+  };
+
+  // ✅ FUNCIÓN NUEVA AÑADIDA
+  const checkAndFinalizeResults = (niñoId) => {
+    const todosCompletos = anexosDisponibles.every(({ key }) => {
+      return localStorage.getItem(`anexo${key}-${niñoId}`) !== null;
+    });
+
+    if (!todosCompletos) return;
+
+    const registros = JSON.parse(localStorage.getItem('registrosNiños')) || [];
+    const niñoIndex = registros.findIndex(n => n.id === niñoId);
+
+    if (niñoIndex !== -1 && registros[niñoIndex].resultados === "Pendiente") {
+        registros[niñoIndex].resultados = "Completado";
+        localStorage.setItem('registrosNiños', JSON.stringify(registros));
+        alert(`¡Felicidades! Se han completado todos los anexos para el niño ${niñoId}.`);
+    }
+  };
+
+  const renderAnexoActivo = () => {
+    const props = { editable: true, withNavbar: false, onSaveAndExit: handleVolverALista };
     switch (activeAnexo) {
-      case "A":
-        return <AnexoA editable={true} withNavbar={false} />;
-      case "B":
-        return <AnexoB editable={true} withNavbar={false} />;
-      case "C":
-        return <AnexoC editable={true} withNavbar={false} />;
-      case "D":
-        return <AnexoD editable={true} withNavbar={false} />;
-      case "E":
-        return <AnexoE editable={true} withNavbar={false} />;
-      default:
-        return null;
+      case "A": return <AnexoA {...props} />;
+      case "B": return <AnexoB {...props} />;
+      case "C": return <AnexoC {...props} />;
+      case "D": return <AnexoD {...props} />;
+      case "E": return <AnexoE {...props} />;
+      default: return null;
     }
   };
 
   return (
     <>
-      <Navbar title={`Anexos del niño ${id}`} />
-
+      <Navbar title={`Anexos del niño ${id}`} currentUser={currentUser}/>
       <div style={{ padding: "2rem" }}>
         {!activeAnexo ? (
           <>
             <h2>Estado de Anexos</h2>
             <ul>
-              {["A", "B", "C", "D", "E"].map((key) => (
+              {anexosDisponibles.map(({ key, title }) => (
                 <li key={key} style={{ marginBottom: "1rem" }}>
                   <span>
-                    <strong>Anexo {key}</strong> –{" "}
-                    {status[key] ? " Llenado" : " Pendiente"}
+                    <strong>Anexo {key}: {title}</strong> – 
+                    <span style={{ color: status[key] ? 'green' : 'red', fontWeight: 'bold' }}>
+                      {status[key] ? " Llenado" : " Pendiente"}
+                    </span>
                   </span>
                   <button
                     className="button button-primary"
@@ -83,7 +119,6 @@ export default function Anexos() {
                 </li>
               ))}
             </ul>
-
             <button
               className="button button-secondary"
               onClick={() => navigate("/dashboard")}
@@ -93,12 +128,7 @@ export default function Anexos() {
           </>
         ) : (
           <>
-            {renderAnexo()}
-            <div style={{ marginTop: "1.5rem" }}>
-              <button className="button button-secondary" onClick={handleSalir}>
-                Guardar y volver a lista de anexos
-              </button>
-            </div>
+            {renderAnexoActivo()}
           </>
         )}
       </div>
