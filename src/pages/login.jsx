@@ -1,5 +1,5 @@
-import LeftSideStart from "../components/LeftSideStart";
-import RightSideStart from "../components/RightSideStart";
+import LeftSideStart from "../components/leftSideStart.jsx";
+import RightSideStart from "../components/rightSideStart.jsx";
 import "../styles/login.css";
 
 export default function Login() {
