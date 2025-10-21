@@ -23,6 +23,10 @@ export default function AnexosHandler() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const params = new URLSearchParams(location.search);
+  const cameFromInstrument = params.get('from') === 'instrument';
+  const returnStep = params.get('returnStep'); // El número del paso al que volver
+
   const [activeAnexo, setActiveAnexo] = useState(null);
   const [status, setStatus] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
@@ -33,7 +37,6 @@ export default function AnexosHandler() {
     
     updateStatusFromStorage();
 
-    const params = new URLSearchParams(location.search);
     const openAnexo = params.get('open');
     if (openAnexo && anexosDisponibles.some(a => a.key === openAnexo)) {
       setActiveAnexo(openAnexo);
@@ -53,17 +56,20 @@ export default function AnexosHandler() {
     setActiveAnexo(key);
   };
 
-  // ✅ FUNCIÓN MODIFICADA
   const handleVolverALista = () => {
     setActiveAnexo(null);
     updateStatusFromStorage();
-    navigate(`/anexoshandler/${id}`, { replace: true });
-    
-    // Llama a la lógica de verificación al volver a la lista
     checkAndFinalizeResults(id);
+
+    if (cameFromInstrument && returnStep) {
+      // Navega de vuelta e incluye "?openStep=" para que Instrument.jsx sepa qué abrir
+      navigate(`/instrument/${id}?openStep=${returnStep}`);
+    } else {
+      // Comportamiento anterior: volver a la lista de anexos
+      navigate(`/anexoshandler/${id}`, { replace: true });
+    }
   };
 
-  // ✅ FUNCIÓN NUEVA AÑADIDA
   const checkAndFinalizeResults = (niñoId) => {
     const todosCompletos = anexosDisponibles.every(({ key }) => {
       return localStorage.getItem(`anexo${key}-${niñoId}`) !== null;
@@ -121,9 +127,9 @@ export default function AnexosHandler() {
             </ul>
             <button
               className="button button-secondary"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate(cameFromInstrument ? `/instrument/${id}` : "/dashboard")}
             >
-              Volver al dashboard
+              {cameFromInstrument ? "Volver a la lista de Pasos" : "Volver al Dashboard"}
             </button>
           </>
         ) : (

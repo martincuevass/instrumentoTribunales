@@ -49,7 +49,7 @@ export default function Navbar({ title = "", currentUser, className = "" }) {
           <button
             onClick={handleLogout}
             aria-label="Cerrar Sesión"
-            className="navbarIcon logout-button" // Añadida clase para estilos
+            className="navbarIcon" // Añadida clase para estilos
           >
             <img src={LogoutIcon} alt="Cerrar Sesión" />
           </button>

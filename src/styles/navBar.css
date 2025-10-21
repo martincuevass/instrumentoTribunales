@@ -27,5 +27,13 @@
 
 .navbarIcon:hover img,
 .navbarIcon:focus img {
-  opacity: 0.8;
+  opacity: 0.8
+}
+
+.navbarIcon.button, /* O puedes usar button.navbarIcon */
+button.navbarIcon {
+  background: none; /* Elimina el color de fondo */
+  border: none;     /* Elimina el borde */
+  padding: 0;       /* Elimina el espaciado interno */
+  cursor: pointer;  /* Mantiene el cursor de "manita" */
 }

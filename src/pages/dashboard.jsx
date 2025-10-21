@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "../components/navBar.jsx";
-import Add from "../components/add";
+import Add from "../components/add.jsx";
 import "../styles/dashboard.css";
 
 export default function Dashboard() {
@@ -159,6 +159,7 @@ const renderResultadosEstado = (row) => {
           <div className="dashboard-steps">
             <h2>CONSULTAR INSTRUMENTO</h2>
             <ul>
+              <li><Link to="/contentGuide/GuideStep0">Paso 0 – Consentimiento Informado</Link></li>
                 <li><Link to="/contentGuide/GuideStep1">Paso 1 – Revisión del Expediente</Link></li>
                 <li><Link to="/contentGuide/anexoA">Anexo A – Revisión del Expediente</Link></li>
                 <li><Link to="/contentGuide/GuideStep2">Paso 2 – Verificación con la familia o persona acompañante</Link></li>
