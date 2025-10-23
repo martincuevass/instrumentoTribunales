@@ -115,7 +115,16 @@ export default function AnexoA({ editable = false, withNavbar = true, onSaveAndE
               <td><label><input type="radio" disabled={!editable} checked={form.salud.tiene === "No"} onChange={() => handleNestedChange("salud", "tiene", "No")} /> No</label></td>
               <td colSpan={2}>
                 <label><input type="radio" disabled={!editable} checked={form.salud.tiene === "Sí"} onChange={() => handleNestedChange("salud", "tiene", "Sí")} /> Sí</label>
-                {form.salud.tiene === "Sí" && <input type="text" placeholder="¿Cuál?" disabled={!editable} value={form.salud.detalle} onChange={(e) => handleNestedChange("salud", "detalle", e.target.value)} />}
+                {form.salud.tiene === "Sí" && (
+                  <input
+                    type="text"
+                    placeholder="¿Cuál?"
+                    disabled={!editable}
+                    value={form.salud.detalle}
+                    onChange={(e) => handleNestedChange("salud", "detalle", e.target.value)}
+                    className="input-inline" /* <-- MODIFICACIÓN AQUÍ */
+                  />
+                )}
               </td>
             </tr>
             <tr>
@@ -135,7 +144,14 @@ export default function AnexoA({ editable = false, withNavbar = true, onSaveAndE
                 <label><input type="radio" disabled={!editable} checked={form.interprete.necesita === "Sí"} onChange={() => handleNestedChange("interprete", "necesita", "Sí")} /> Sí</label>
                 {form.interprete.necesita === "Sí" && (
                   <>
-                    <input type="text" placeholder="Idioma/Lengua" disabled={!editable} value={form.interprete.detalle} onChange={(e) => handleNestedChange("interprete", "detalle", e.target.value)} />
+                    <input
+                      type="text"
+                      placeholder="Idioma/Lengua"
+                      disabled={!editable}
+                      value={form.interprete.detalle}
+                      onChange={(e) => handleNestedChange("interprete", "detalle", e.target.value)}
+                      className="input-inline" /* <-- MODIFICACIÓN AQUÍ */
+                    />
                     {["Lengua de Señas Mexicana", "Maya", "Otro"].map(tipo => (
                       <label key={tipo} style={{ marginRight: "1rem" }}><input type="checkbox" disabled={!editable} checked={form.interprete.tipos.includes(tipo)} onChange={() => handleCheckboxGroup("interprete", tipo)} /> {tipo}</label>
                     ))}
@@ -176,4 +192,3 @@ export default function AnexoA({ editable = false, withNavbar = true, onSaveAndE
     </>
   );
 }
-

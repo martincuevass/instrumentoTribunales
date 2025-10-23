@@ -44,7 +44,9 @@
 }
 
 /* Encabezado azul */
-.guideStepContainer tr:first-child td {
+/* MODIFICADO: Ahora aplica a <th> en <thead> y al 1er <tr> en <tbody> */
+.guideStepContainer thead th,
+.guideStepContainer tbody tr:first-child td {
   background-color: #1f365f;
   color: white;
   font-weight: bold;
@@ -52,8 +54,80 @@
 }
 
 /* Subencabezado gris */
-.guideStepContainer tr:nth-child(2) td {
+/* MODIFICADO: Ahora aplica a <th> y al 2do <tr> en <tbody> */
+.guideStepContainer th,
+.guideStepContainer tbody tr:nth-child(2) td {
   background-color: #d1d7e0;
   font-weight: bold;
   text-align: center;
+}
+
+/* === INICIO DE LAS MODIFICACIONES === */
+
+/* 1. Estilos generales para inputs de texto y número */
+/* MODIFICADO: Añadido input[type="date"] y textarea */
+.guideStepContainer td input[type="text"],
+.guideStepContainer td input[type="number"],
+.guideStepContainer td input[type="date"],
+.guideStepContainer td textarea {
+  width: 100%;                  
+  padding: 8px;                 
+  background-color: #ffffff;    /* Fondo blanco claro */
+  border: 1px solid #b0b0b0;    
+  border-radius: 4px;           
+  box-sizing: border-box;       
+  font-family: inherit;         
+  font-size: 0.95rem;           
+  color: #1e325a;
+}
+
+/* 2. Fondo claro para inputs deshabilitados */
+/* MODIFICADO: Añadido textarea:disabled */
+.guideStepContainer td input:disabled,
+.guideStepContainer td textarea:disabled {
+  background-color: #f0f0f0;  
+  color: #777;                 
+}
+
+/* 3. Espaciado para labels (radio y checkbox) */
+.guideStepContainer td label {
+  display: inline-block;      
+  margin-right: 12px;         
+  margin-bottom: 5px;         
+  vertical-align: middle;     
+}
+
+/* 4. Alineación de los botones de radio/checkbox con su texto */
+.guideStepContainer td label input[type="radio"],
+.guideStepContainer td label input[type="checkbox"] {
+  vertical-align: middle;
+  margin-right: 4px; 
+}
+
+/* 5. Clase de utilidad para inputs que NO deben ocupar el 100% */
+.guideStepContainer td .input-inline {
+  width: auto;                
+  display: inline-block;      
+  margin-left: 8px;           
+}
+
+/* 6. NUEVO: Estilos para la celda de cabecera de Anexo E (la azul) */
+.guideStepContainer .anexoE-header-cell {
+  background-color: #1f365f; /* Azul oscuro */
+  color: white;
+  padding: 1rem;
+}
+
+/* 7. NUEVO: Estilos para labels DENTRO de la celda azul */
+.guideStepContainer .anexoE-header-cell label {
+  display: block; /* Hace que cada label ocupe una línea */
+  font-weight: bold;
+  margin-bottom: 0.75rem; /* Espacio entre cada grupo de label/input */
+  color: white; /* Asegura que el texto del label sea blanco */
+}
+
+/* 8. NUEVO: Estilos para inputs DENTRO de la celda azul */
+.guideStepContainer .anexoE-header-cell input {
+  margin-top: 4px; /* Pequeño espacio entre el label y el input */
+  width: 100%;     /* Asegura que ocupen todo el ancho */
 }

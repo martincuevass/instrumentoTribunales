@@ -154,6 +154,17 @@ const renderResultadosEstado = (row) => {
                   <tr><td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>Sin resultados</td></tr>
                 )}
               </tbody>
+              {/* 👇 INICIO: CÓDIGO AGREGADO 👇 */}
+                <tfoot>
+                  <tr>
+                    <td colSpan={4} style={{ textAlign: "center", padding: "1rem", fontWeight: "bold" }}>
+                      <Link to="/childtable" style={{ textDecoration: "underline" }}>
+                        Ver todo
+                      </Link>
+                    </td>
+                  </tr>
+                </tfoot>
+                {/* 👆 FIN: CÓDIGO AGREGADO 👆 */}
             </table>
           </div>
           <div className="dashboard-steps">

@@ -19,8 +19,9 @@ const diligenciaOptions = [
   "Informar sobre estatus del medio o disposición final"
 ];
 
+// --- MODIFICACIÓN 1: Aquí se cambia 'nombrePerito' ---
 const initialState = {
-  datosGenerales: { nombreNNA: "", edad: "", nombrePerito: "", fecha: "" },
+  datosGenerales: { nombreNNA: "", edad: "", nombrePersonal: "", fecha: "" },
   infraestructura: {
     salaEntrevista: "",
     adecuacionesAcceso: "",
@@ -98,19 +99,54 @@ export default function AnexoE({ editable = false, withNavbar = true, onSaveAndE
             </tr>
           </thead>
           <tbody>
-            {/* --- Datos generales --- */}
             <tr>
-              <td colSpan={5}>
-                Nombre de la Niña, Niño o Adolescente:{" "}
-                <input type="text" disabled={!editable} value={form.datosGenerales.nombreNNA} onChange={e => handleTextChange('datosGenerales', 'nombreNNA', e.target.value)} className="inputField" />
-                &nbsp;&nbsp;
-                Edad: <input type="number" disabled={!editable} value={form.datosGenerales.edad} onChange={e => handleTextChange('datosGenerales', 'edad', e.target.value)} className="inputField smallInput" /> <br />
-                Nombre del perito:{" "}
-                <input type="text" disabled={!editable} value={form.datosGenerales.nombrePerito} onChange={e => handleTextChange('datosGenerales', 'nombrePerito', e.target.value)} className="inputField" />
-                &nbsp;&nbsp;
-                Fecha: <input type="date" disabled={!editable} value={form.datosGenerales.fecha} onChange={e => handleTextChange('datosGenerales', 'fecha', e.target.value)} className="inputField" />
+              <td colSpan={5} className="anexoE-header-cell">
+                
+                <label>
+                  Nombre de la Niña, Niño o Adolescente:
+                  <input 
+                    type="text" 
+                    disabled={!editable} 
+                    value={form.datosGenerales.nombreNNA} 
+                    onChange={e => handleTextChange('datosGenerales', 'nombreNNA', e.target.value)} 
+                  />
+                </label>
+                
+                <label>
+                  Edad:
+                  <input 
+                    type="number" 
+                    disabled={!editable} 
+                    value={form.datosGenerales.edad} 
+                    onChange={e => handleTextChange('datosGenerales', 'edad', e.target.value)} 
+                  />
+                </label>
+                
+                {/* --- MODIFICACIÓN 2: Aquí se cambia el label y las referencias --- */}
+                <label>
+                  Nombre del personal:
+                  <input 
+                    type="text" 
+                    disabled={!editable} 
+                    value={form.datosGenerales.nombrePersonal} 
+                    onChange={e => handleTextChange('datosGenerales', 'nombrePersonal', e.target.value)} 
+                  />
+                </label>
+                {/* --- Fin de la modificación --- */}
+
+                <label>
+                  Fecha:
+                  <input 
+                    type="date" 
+                    disabled={!editable} 
+                    value={form.datosGenerales.fecha} 
+                    onChange={e => handleTextChange('datosGenerales', 'fecha', e.target.value)} 
+                  />
+                </label>
+
               </td>
             </tr>
+
             <tr className="subheader-row">
               <th>Categoría</th>
               <th>Descripción</th>
@@ -133,18 +169,23 @@ export default function AnexoE({ editable = false, withNavbar = true, onSaveAndE
             {/* --- Durante la diligencia --- */}
             <tr className="subheader-row"><th colSpan={5}>Durante el procedimiento de la diligencia</th></tr>
             {diligenciaOptions.map((desc, index) => (
-               <OptionRow key={desc} category={index === 0 ? { name: "Durante la diligencia", rowSpan: diligenciaOptions.length } : null} description={desc} value={form.duranteDiligencia[desc]} onChange={(d, val) => handleRadioChange('duranteDiligencia', d, val)} editable={editable} />
+                <OptionRow key={desc} category={index === 0 ? { name: "Durante la diligencia", rowSpan: diligenciaOptions.length } : null} description={desc} value={form.duranteDiligencia[desc]} onChange={(d, val) => handleRadioChange('duranteDiligencia', d, val)} editable={editable} />
             ))}
 
             {/* --- Descripción --- */}
-            <tr className="subheader-row">
-              <td colSpan={5} style={{ fontWeight: "bold" }}>
+            <tr className="subheader-row"> 
+              <td colSpan={5} style={{ fontWeight: "bold", textAlign: "left" }}>
                 Descripción de la implementación del apoyo:
               </td>
             </tr>
             <tr>
               <td colSpan={5}>
-                <textarea disabled={!editable} value={form.descripcionImplementacion} onChange={e => setForm(prev => ({...prev, descripcionImplementacion: e.target.value}))} className="inputField" style={{ width: "100%", height: "80px", resize: 'vertical' }} />
+                <textarea 
+                  disabled={!editable} 
+                  value={form.descripcionImplementacion} 
+                  onChange={e => setForm(prev => ({...prev, descripcionImplementacion: e.target.value}))} 
+                  style={{ height: "80px", resize: 'vertical' }} 
+                />
               </td>
             </tr>
           </tbody>
