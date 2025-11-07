@@ -128,7 +128,6 @@ export default function ChildTable() {
                   <th>Instrumento</th>
                   <th>Resultados capturados</th>
                   <th>Usuario (ID)</th> 
-                  {/* 👇 CAMBIO: Nueva columna de acciones 👇 */}
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -140,7 +139,6 @@ export default function ChildTable() {
                     <td style={{ textAlign: "center" }}>{renderInstrumentoEstado(row)}</td>
                     <td style={{ textAlign: "center" }}>{renderResultadosEstado(row)}</td>
                     <td style={{ textAlign: "center" }}>{row.userId || "N/A"}</td> 
-                    {/* 👇 CAMBIO: Nuevo botón de eliminar 👇 */}
                     <td style={{ textAlign: "center" }}>
                       <button 
                         onClick={() => handleDelete(row.id)}
@@ -159,7 +157,6 @@ export default function ChildTable() {
                   </tr>
                 ))}
                 {allRecords.length === 0 && (
-                  // 👇 CAMBIO: colSpan ahora es 6 👇
                   <tr><td colSpan={6} style={{ textAlign: "center", padding: "1rem" }}>No hay registros en el sistema</td></tr>
                 )}
               </tbody>

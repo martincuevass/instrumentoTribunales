@@ -1,0 +1,11 @@
+[
+    {
+    "id": 10001,
+    "nombreCompleto": "Juan Pérez",
+    "email": "juani.perez@empresa.com",
+    "password": "password123",
+    "tipoUsuario": "entrevistador",
+    "contacto": "+52 (555) 100-0101",
+    "jefeAdministrador": "a"
+  }
+]
